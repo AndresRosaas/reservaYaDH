@@ -1,0 +1,70 @@
+package com.reservaya.backend.controller;
+
+import com.reservaya.backend.dto.ProductDTO;
+import com.reservaya.backend.exception.ResourceNotFoundException;
+import com.reservaya.backend.service.IProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+    private final IProductService productService;
+
+    public ProductController(IProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> findAll(){return ResponseEntity.ok(productService.findAll());}
+
+
+    @GetMapping("/random")
+    public ResponseEntity<List<ProductDTO>> findRandom(@RequestParam(defaultValue = "10") int limit){
+        List<ProductDTO> products = productService.findRandom(limit);
+        return ResponseEntity.ok(products);
+    }
+
+    //@GetMapping("/paginated")
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) throws ResourceNotFoundException{
+        Optional<ProductDTO> productToLook = productService.findById(id);
+
+        if(productToLook.isPresent()){
+            return ResponseEntity.ok(productToLook.get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping
+    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO productDTO){
+        ProductDTO saved = productService.save(productDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) throws ResourceNotFoundException{
+        productService.delete(id);
+        return ResponseEntity.ok("Se elimino el producto con ID: " + id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductDTO productDTO){
+        Optional<ProductDTO> productExist = productService.findById(id);
+        if(productExist.isPresent()){
+            productDTO.setId(id);
+            ProductDTO productUpdate = productService.update(productDTO);
+            return ResponseEntity.ok(productUpdate);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No existe producto con ID: " + id);
+        }
+
+    }
+
+}

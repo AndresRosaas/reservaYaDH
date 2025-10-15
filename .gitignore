@@ -1,0 +1,60 @@
+HELP.md
+
+# BACKEND (Java/Spring Boot)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+!**/backend/src/main/**/target/
+!**/backend/src/test/**/target/
+
+### STS ###
+backend/.apt_generated
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.springBeans
+backend/.sts4-cache
+
+### IntelliJ IDEA ###
+backend/.idea
+backend/*.iws
+backend/*.iml
+backend/*.ipr
+.idea/
+*.iml
+
+### NetBeans ###
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+backend/build/
+!**/backend/src/main/**/build/
+!**/backend/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+
+# FRONTEND (React)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+
+# GENERAL
+*.log
+*.db
+*.mv.db
+*.trace.db
+.DS_Store
+Thumbs.db
+.env
+*.tmp
+*.bak

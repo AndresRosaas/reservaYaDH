@@ -1,0 +1,75 @@
+package com.reservaya.backend.mapper;
+
+import com.reservaya.backend.dto.CategoryDTO;
+import com.reservaya.backend.dto.ProductDTO;
+import com.reservaya.backend.entity.Category;
+import com.reservaya.backend.entity.Product;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class ProductMapper {
+    //Entity a DTO
+    public ProductDTO toDTO(Product product){
+        if(product == null) return null;
+
+        ProductDTO dto = new ProductDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice());
+        dto.setCurrency(product.getCurrency());
+        dto.setPolicies(product.getPolicies());
+        dto.setLocation(product.getLocation());
+
+        //mapeo category
+        if(product.getCategory() != null) {
+            Category category = product.getCategory();
+            dto.setCategoryId(category.getId());
+            dto.setCategoryName(category.getName());
+
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(category.getId());
+            categoryDTO.setName(category.getName());
+            categoryDTO.setDescription(category.getDescription());
+
+            dto.setCategory(categoryDTO);
+
+        }
+
+        return dto;
+    }
+
+    //DTO a Entity
+    public Product toEntity(ProductDTO dto){
+        if(dto == null) return null;
+
+        Product product = new Product();
+        product.setId(dto.getId());
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setLocation(dto.getLocation());
+        product.setPrice(dto.getPrice());
+        product.setCurrency(dto.getCurrency());
+        product.setPolicies(dto.getPolicies());
+
+        if(dto.getCategory() != null){
+            Category category = new Category();
+            category.setId(dto.getCategory().getId());
+            product.setCategory(category);
+        }
+
+        return product;
+
+    }
+    public List<ProductDTO> toDTOList(List<Product> products){
+        List<ProductDTO> productDTOS = new ArrayList<>();
+
+        for (Product product : products){
+            productDTOS.add(toDTO(product));
+        }
+        return productDTOS;
+    }
+}
