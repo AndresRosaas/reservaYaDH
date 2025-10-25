@@ -1,0 +1,48 @@
+# Identidad de Marca - ReservaYa
+
+## Concepto
+
+ReservaYa es una plataforma de reservas que busca transmitir **confianza** (azul), **dinamismo** (turquesa) y **calidez** (beige). La idea es que el usuario se sienta seguro y cómodo al reservar espacios.
+
+---
+
+## Logo
+
+Usé una "R" simple en un cuadrado con degradado porque:
+- Es fácil de reconocer
+- El degradado azul-turquesa conecta los dos colores principales
+- Es escalable (se ve bien chico y grande)
+
+---
+
+## Colores
+
+Elegí esta paleta porque quería algo fresco pero profesional:
+
+### Azul Profundo (#008DDA)
+- **Por qué:** Transmite confianza y seriedad
+- **Dónde:** Botones principales, header, links
+
+### Turquesa Vibrante (#41C9E2)
+- **Por qué:** Aporta energía sin ser agresivo
+- **Dónde:** Botones secundarios, badges
+
+### Turquesa Pastel (#ACE2E1)
+- **Por qué:** Suaviza, da sensación de espacio y tranquilidad
+- **Dónde:** Fondos de cards, hover states
+
+### Beige Crema (#F7EEDD)
+- **Por qué:** Contrasta con los azules fríos, aporta calidez
+- **Dónde:** Fondo del sitio
+
+---
+
+## Tipografía
+
+System fonts (default del navegador) para que cargue rápido y se vea nativo en cada sistema.
+
+---
+
+## Inspiración
+
+Me inspiré en sitios de reservas como Airbnb y Booking, pero con una paleta más fresca y menos corporativa.

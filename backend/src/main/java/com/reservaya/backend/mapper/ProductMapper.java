@@ -24,6 +24,11 @@ public class ProductMapper {
         dto.setPolicies(product.getPolicies());
         dto.setLocation(product.getLocation());
 
+        if(product.getImageUrls() != null && !product.getImageUrls().isEmpty()) {
+            dto.setImageUrls(new ArrayList<>(product.getImageUrls()));
+            dto.setMainImageUrl(product.getImageUrls().get(0)); // Primera imagen como principal
+        }
+
         //mapeo category
         if(product.getCategory() != null) {
             Category category = product.getCategory();
@@ -59,6 +64,9 @@ public class ProductMapper {
             Category category = new Category();
             category.setId(dto.getCategory().getId());
             product.setCategory(category);
+        }
+        if(dto.getImageUrls() != null && !dto.getImageUrls().isEmpty()) {
+            product.setImageUrls(new ArrayList<>(dto.getImageUrls()));
         }
 
         return product;

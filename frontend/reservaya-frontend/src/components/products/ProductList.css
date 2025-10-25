@@ -1,0 +1,28 @@
+.product-list-container {
+  margin: 2rem 0;
+}
+
+.product-list-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+/* Grid de 2 columnas, máximo 5 filas (10 productos) */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* En mobile: 1 columna */
+@media (max-width: 768px) {
+  .product-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-list-title {
+    font-size: 1.5rem;
+  }
+}

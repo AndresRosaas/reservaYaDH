@@ -1,0 +1,196 @@
+.product-gallery {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+/* Imagen principal - GRANDE */
+.gallery-main {
+    width: 80%;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.gallery-main:hover {
+    transform: scale(1.02);
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Miniaturas - CHIQUITAS */
+.gallery-thumbnails {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+    width: 200px;
+}
+
+.gallery-thumbnail {
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gallery-thumbnail:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Botón "Ver más" */
+.gallery-see-more {
+    height: 100px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.gallery-see-more:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* ========== MODAL ========== */
+.gallery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.gallery-modal-content {
+    position: relative;
+    max-width: 1000px;
+    /* Ajustá este valor al tamaño que quieras */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gallery-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.gallery-modal-close:hover {
+    background: #f0f0f0;
+}
+
+.gallery-modal-image {
+    width: 100%;
+    max-height: 60vh;
+    /* Ajustá este valor para controlar la altura máxima */
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.gallery-modal-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: white;
+}
+
+.gallery-modal-controls button {
+    background: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.gallery-modal-controls button:hover {
+    background: #f0f0f0;
+}
+
+.gallery-modal-thumbnails {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.gallery-modal-thumbnails img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+    border: 2px solid transparent;
+}
+
+.gallery-modal-thumbnails img:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.gallery-modal-thumbnails img.active {
+    opacity: 1;
+    border-color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-gallery {
+        flex-direction: column; /* ← En mobile, vuelven abajo */
+    }
+    
+    .gallery-main {
+        height: 300px;
+    }
+
+    .gallery-thumbnail,
+    .gallery-see-more {
+        height: 80px;
+        min-width: 80px;
+    }
+
+    .gallery-thumbnails {
+        grid-template-columns: repeat(4, 1fr);
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+    }
+}

@@ -1,0 +1,118 @@
+.search-bar {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--secondary-500) 100%);
+  padding: 1rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.search-bar-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.search-bar-title {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.search-bar-subtitle {
+  font-size: 1.125rem;
+  color: var(--accent-lighter);
+  margin-bottom: 2rem;
+}
+
+/* Formulario de búsqueda */
+.search-bar-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 1rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.search-field {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.search-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 0.5rem;
+}
+
+.search-field input {
+  padding: 0.75rem;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: border-color var(--transition-base);
+}
+
+.search-field input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+}
+
+.search-field input:disabled {
+  background: var(--gray-100);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Botón de búsqueda */
+.search-btn {
+  align-self: flex-end;
+  padding: 0.75rem 2rem;
+  white-space: nowrap;
+}
+
+.search-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Nota */
+.search-bar-note {
+  margin-top: 1rem;
+  color: var(--accent-light);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .search-bar-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .search-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-bar {
+    padding: 2rem 1rem;
+  }
+
+  .search-bar-title {
+    font-size: 1.5rem;
+  }
+
+  .search-bar-subtitle {
+    font-size: 1rem;
+  }
+
+  .search-bar-form {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}

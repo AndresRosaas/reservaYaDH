@@ -1,0 +1,86 @@
+
+.admin-panel {
+  max-width: auto;
+  margin: 0 auto;
+}
+
+/* Menú principal */
+.admin-menu {
+  background: rgb(253, 227, 227);
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-menu h2 {
+  font-size: 2.5rem;
+  color: #111827;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.admin-menu-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.admin-menu-card {
+  padding: 2rem;
+  border: 2px solid #1043a9;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: rgb(246, 195, 195);
+}
+
+.admin-menu-card:hover {
+  border-color: #2563eb;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+}
+
+.admin-menu-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.admin-menu-card h3 {
+  font-size: 1.25rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.admin-menu-card p {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Vista de contenido */
+.admin-view {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-view-header h2 {
+  font-size: 1.5rem;
+  color: #111827;
+  margin: 0;
+}
+.admin-header h1 {
+  font-size: 1.53.rem;
+  color: #111827;
+  margin: 0;
+}

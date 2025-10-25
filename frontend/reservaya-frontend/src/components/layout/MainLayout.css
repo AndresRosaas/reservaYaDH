@@ -1,0 +1,13 @@
+.main-layout {
+  min-height: 100vh;
+  display: auto;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 64px; /* Altura del header */
+  padding: 2rem;
+}
+
+

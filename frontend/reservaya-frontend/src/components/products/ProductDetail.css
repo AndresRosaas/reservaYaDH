@@ -1,0 +1,110 @@
+.product-detail {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+/* Destacados: Precio, ubicación, categoría */
+.product-detail-highlight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.product-detail-price,
+.product-detail-location,
+.product-detail-category {
+  background: var(--accent-lighter);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  flex-direction: column;
+  display: flex;
+  gap: 1rem;
+  border-left: 4px solid var(--primary-600);
+}
+.product-detail-price{
+  display: inline-block;
+}
+
+.price-label,
+.location-label,
+.category-label {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
+.price-value {
+  font-size: 2rem;
+  color: var(--primary-600);
+  font-weight: 700;
+}
+
+.location-value,
+.category-value {
+  font-size: 1.2rem;
+  color: var(--gray-900);
+  font-weight: 600;
+}
+
+/* Secciones de contenido */
+.product-detail-section {
+  margin-bottom: 2rem;
+}
+
+.product-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.product-detail-section h2 {
+  font-size: 1.5rem;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.product-detail-section p {
+  font-size: 1rem;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+/* Features list (si existen) */
+.product-features {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.product-features li {
+  padding: 0.75rem;
+  background: var(--warm-light);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  border-left: 3px solid var(--secondary-500);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-detail {
+    padding: 1.5rem;
+  }
+  
+  .product-detail-highlight {
+    grid-template-columns: 1fr;
+  }
+  
+  .price-value {
+    font-size: 1.5rem;
+  }
+  
+  .product-features {
+    grid-template-columns: 1fr;
+  }
+}

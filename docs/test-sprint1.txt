@@ -1,0 +1,134 @@
+# Testing Sprint 1
+
+**Proyecto:** ReservaYa  
+**Fecha:** Octubre 2025  
+**Responsable:** Andres Rosas
+
+---
+
+## Metodología
+
+Se realizaron pruebas manuales exploratorias sobre las funcionalidades implementadas en Sprint 1. Las pruebas se ejecutaron en:
+- **Navegador:** Chrome 120
+- **Resoluciones:** Desktop (1920x1080) y Mobile (375x667)
+- **Backend:** Corriendo localmente en puerto 8080
+- **Frontend:** Vite dev server en puerto 5173
+
+---
+
+## Resultados
+
+### Header y Navegación
+
+**✅ Funcionando:**
+- El logo redirige correctamente al home
+- Los botones están bien alineados (logo izquierda, botones derecha)
+- Header fijo funciona al hacer scroll
+- En mobile el texto del logo se oculta correctamente
+
+**Observaciones:**
+- Tuve que ajustar el CSS varias veces para que los botones quedaran bien a la derecha
+
+---
+
+### Lista de Productos (Home)
+
+**✅ Funcionando:**
+- Trae productos del backend correctamente
+- Muestra máximo 10 productos
+- Grid de 2 columnas en desktop, 1 en mobile
+- Las cards se ven bien con la info (nombre, precio, ubicación)
+
+**⚠️ Issues encontrados:**
+- Al principio no se veían las imágenes porque usaba `product.images` en lugar de `product.imageUrls`
+- Tuve que agregar validación para no mostrar productos sin imágenes
+
+---
+
+### Detalle de Producto
+
+**✅ Funcionando:**
+- Muestra toda la info del producto (nombre, descripción, precio, ubicación)
+- Botón volver funciona
+- La galería de imágenes se ve bien
+
+**⚠️ Issues encontrados:**
+- El componente se renderizaba 3 veces (problema de useEffect mal configurado)
+- Tuve que mover `fetchProduct` dentro del useEffect para arreglarlo
+- Modal de imágenes al principio no abría, era problema del onClick
+
+---
+
+### Panel de Administración
+
+**✅ Funcionando:**
+- Ruta `/administracion` accesible
+- Menú con 2 opciones (Agregar producto / Lista de productos)
+- En mobile muestra mensaje de "no disponible"
+- Navegación entre vistas funciona
+
+**⚠️ Issues encontrados:**
+- Los botones del menú no funcionaban porque tenía mal el onClick: `onClick={(setCurrentView('add'))}` en lugar de `onClick={() => setCurrentView('add')}`
+- Error de typo en CSS: `admin-manu-cards` en lugar de `admin-menu-cards`
+
+---
+
+### Agregar Producto
+
+**✅ Funcionando:**
+- Valida campos obligatorios (nombre, descripción, ubicación, precio)
+- Permite agregar múltiples URLs de imágenes
+- El producto creado aparece en la lista
+- Select de moneda funciona
+
+**⚠️ Pendiente:**
+- Validación de nombre duplicado (no implementado en el backend todavía)
+- Categoría es opcional pero da warning si el backend espera una
+
+**Mejora futura:**
+- Subida de archivos en lugar de URLs (implementar con Cloudinary en Sprint 2)
+
+---
+
+### Eliminar Producto
+
+**✅ Funcionando:**
+- Botón eliminar muestra modal de confirmación
+- Confirmar elimina el producto de la BD
+- Cancelar no hace nada
+- El producto eliminado desaparece de la tabla
+
+---
+
+### Responsive
+
+**✅ Funcionando:**
+- Header responsive (oculta texto en mobile)
+- ProductList cambia a 1 columna en mobile
+- Galería de imágenes se adapta
+- Admin panel muestra mensaje en mobile
+
+---
+
+## Bugs Conocidos
+
+1. **Categoría opcional:** Si el backend espera categoría obligatoria, el formulario falla. Solución temporal: no enviar el campo si está vacío.
+
+2. **Re-renders múltiples:** React en Strict Mode renderiza 2 veces. Es normal en desarrollo pero puede confundir en los logs.
+
+---
+
+## Pruebas Pendientes
+
+- [ ] Test de integración backend-frontend automatizado
+- [ ] Test de carga (muchos productos)
+- [ ] Test de validación de nombre duplicado (cuando se implemente en backend)
+- [ ] Test en otros navegadores (Firefox, Safari)
+
+---
+
+## Conclusión
+
+El Sprint 1 está funcional y cumple con todas las User Stories de prioridad alta y media. Los bugs encontrados se resolvieron durante el desarrollo. Queda pendiente implementar tests automatizados en Sprint 2.
+
+**Estado:** ✅ Aprobado para producción

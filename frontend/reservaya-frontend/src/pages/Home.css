@@ -1,0 +1,21 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; 
+  padding: 2rem 0;
+}
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* importantísimo */
+}
+
+@media (max-width: 768px) {
+  .home-hero h1 {
+    font-size: 1.875rem;
+  }
+  
+  .home-hero p {
+    font-size: 1rem;
+  }
+}
