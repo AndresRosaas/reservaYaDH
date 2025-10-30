@@ -1,6 +1,7 @@
 package com.reservaya.backend.service;
 
 import com.reservaya.backend.dto.ProductDTO;
+import com.reservaya.backend.entity.Product;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 
@@ -19,11 +20,16 @@ public interface IProductService {
     //Borro productos
     void delete (Long id) throws ResourceNotFoundException;
     //Actualizo productos
-    ProductDTO update(ProductDTO productDTO);
+    ProductDTO update(Long id, ProductDTO productDTO);
     //Coloco un booleano para saber si existe o no
     boolean findByName(String firstName);
     //Pagino los productos para que se muestren solo una cantidad
     Page<ProductDTO> findPaginated(int page, int size);
+    ProductDTO assignCategory(Long productId, Long categoryId);
+    ProductDTO addFeature(Long productId, Long featureId);
+    ProductDTO removeFeature (Long productId, Long featureId);
+    List<ProductDTO> findCategoryById(Long categoryId);
+
 
 
 

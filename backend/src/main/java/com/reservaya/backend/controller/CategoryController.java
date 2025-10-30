@@ -24,7 +24,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAll(){return ResponseEntity.ok(categoryService.findAll());}
 
-    @PostMapping
+    @PostMapping //Solo admin
     public ResponseEntity<CategoryDTO> save(@RequestBody CategoryDTO categoryDTO){
         CategoryDTO saved = categoryService.save(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);}
@@ -39,5 +39,15 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) throws ResourceNotFoundException {
+        categoryService.delete(id);
+        return ResponseEntity.ok("Se elimino la categoria con ID: " + id);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto){
+        CategoryDTO updated = categoryService.update(id, dto);
+        return ResponseEntity.noContent().build();
     }
 }

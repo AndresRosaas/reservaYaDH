@@ -10,8 +10,10 @@ import java.util.Optional;
 
 public interface IFeatureService {
     FeatureDTO save(FeatureDTO featureDTO);
-    FeatureDTO update(FeatureDTO featureDTO);
+    FeatureDTO update(Long id, FeatureDTO featureDTO);
     void delete(Long id)throws ResourceNotFoundException;
     List<FeatureDTO> findAll();
     Optional<FeatureDTO> findById(Long id) throws ResourceNotFoundException;
+    FeatureDTO findByName(String name);
+    boolean existsByName(String name);
 }

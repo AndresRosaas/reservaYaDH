@@ -3,42 +3,33 @@ package com.reservaya.backend.dto;
 import com.reservaya.backend.enums.UserRole;
 
 public class UserDTO {
-    private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private String confirmPassword;
     private UserRole role;
     private String avatar; //Imagen o iniciales
 
     public UserDTO() {
     }
 
-    public UserDTO(String firstName, String lastName, String email, String password, UserRole role) {
+    public UserDTO(String firstName, String lastName, String email, String password, String confirmPassword, UserRole role, String avatar) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role = UserRole.USER;
+        this.confirmPassword = confirmPassword;
+        this.role = role;
+        this.avatar = avatar;
     }
 
     public UserDTO(String avatar, Long id, String firstName, String lastName, String email, UserRole role) {
         this.avatar = avatar;
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -73,6 +64,14 @@ public class UserDTO {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public UserRole getRole() {
         return role;
     }
@@ -87,8 +86,5 @@ public class UserDTO {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-    public String getFullName(){
-        return firstName + ""+ lastName;
     }
 }

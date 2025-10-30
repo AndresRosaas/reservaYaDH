@@ -1,8 +1,10 @@
 package com.reservaya.backend.mapper;
 
 import com.reservaya.backend.dto.CategoryDTO;
+import com.reservaya.backend.dto.FeatureDTO;
 import com.reservaya.backend.dto.ProductDTO;
 import com.reservaya.backend.entity.Category;
+import com.reservaya.backend.entity.Feature;
 import com.reservaya.backend.entity.Product;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,12 @@ import java.util.List;
 
 @Component
 public class ProductMapper {
+    private final FeatureMapper featureMapper;
+
+    public ProductMapper(FeatureMapper featureMapper) {
+        this.featureMapper = featureMapper;
+    }
+
     //Entity a DTO
     public ProductDTO toDTO(Product product){
         if(product == null) return null;
@@ -43,6 +51,13 @@ public class ProductMapper {
             dto.setCategory(categoryDTO);
 
         }
+        if(product.getFeatures() != null && !product.getFeatures().isEmpty()){
+            List<FeatureDTO> featureDTOS = new ArrayList<>();
+            for (Feature feature : product.getFeatures()){
+                featureDTOS.add(featureMapper.toDTO(feature));
+            }
+            dto.setFeatures(featureDTOS);
+        }
 
         return dto;
     }
@@ -52,7 +67,6 @@ public class ProductMapper {
         if(dto == null) return null;
 
         Product product = new Product();
-        product.setId(dto.getId());
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setLocation(dto.getLocation());

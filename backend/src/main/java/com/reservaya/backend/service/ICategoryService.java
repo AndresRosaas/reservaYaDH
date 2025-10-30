@@ -13,7 +13,7 @@ public interface ICategoryService {
     //Busco la categoria
     Optional<CategoryDTO> findById (Long id) throws ResourceNotFoundException;
     //Actualizo la categoria
-    CategoryDTO update (CategoryDTO categoryDTO);
+    CategoryDTO update (Long id, CategoryDTO categoryDTO);
     //Borro la categoria
     void delete (Long id) throws ResourceNotFoundException;
     //Busco todas

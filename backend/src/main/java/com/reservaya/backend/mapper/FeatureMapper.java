@@ -25,16 +25,17 @@ public class FeatureMapper {
         if(featureDTO == null) return null;
 
         Feature feature = new Feature();
-        feature.setId(featureDTO.getId());
         feature.setName(featureDTO.getName());
         feature.setIcon(featureDTO.getIcon());
 
         return feature;
     }
 
-    List <FeatureDTO> toDTOList(List<Feature> features){
-        List<FeatureDTO> featureDTOS = new ArrayList<>();
+    public List <FeatureDTO> toDTOList(List<Feature> features){
+        if (features == null || features.isEmpty()) {
+        return new ArrayList<>();}
 
+        List<FeatureDTO> featureDTOS= new ArrayList<>();
         for (Feature feature : features){
             featureDTOS.add(toDTO(feature));
         }

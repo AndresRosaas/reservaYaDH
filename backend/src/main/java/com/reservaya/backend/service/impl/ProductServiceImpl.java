@@ -2,10 +2,12 @@ package com.reservaya.backend.service.impl;
 
 import com.reservaya.backend.dto.ProductDTO;
 import com.reservaya.backend.entity.Category;
+import com.reservaya.backend.entity.Feature;
 import com.reservaya.backend.entity.Product;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.mapper.ProductMapper;
 import com.reservaya.backend.repository.ICategoryRepository;
+import com.reservaya.backend.repository.IFeatureRepository;
 import com.reservaya.backend.repository.IProductRepository;
 import com.reservaya.backend.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,13 @@ public class ProductServiceImpl implements IProductService {
     private final IProductRepository productRepository;
     private final ProductMapper productMapper;
     private final ICategoryRepository categoryRepository;
+    private final IFeatureRepository featureRepository;
 
-    public ProductServiceImpl(IProductRepository productRepository, ProductMapper productMapper, ICategoryRepository categoryRepository) {
+    public ProductServiceImpl(IProductRepository productRepository, ProductMapper productMapper, ICategoryRepository categoryRepository, IFeatureRepository featureRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.categoryRepository = categoryRepository;
+        this.featureRepository = featureRepository;
     }
 
     //Crear el producto
@@ -62,7 +66,7 @@ public class ProductServiceImpl implements IProductService {
     }
     //Actualizo el producto
     @Override
-    public ProductDTO update(ProductDTO productDTO){
+    public ProductDTO update(Long id, ProductDTO productDTO){
         //Verifico si el producto existe
         Product existProduct = productRepository.findById(productDTO.getId())
                 .orElseThrow(()-> new ResourceNotFoundException(
@@ -135,7 +139,64 @@ public class ProductServiceImpl implements IProductService {
     public boolean findByName(String firstName){
         return productRepository.existsByName(firstName);
     }
+    @Override
+    public ProductDTO assignCategory(Long productId, Long categoryId){
+        //Busco que exista el producto
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Producto no encontrado con id: " + productId
+                ));
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Categoria no encontrado con id: " + productId
+                ));
+        product.setCategory(category);
+        Product updatedProduct = productRepository.save(product);
+        return productMapper.toDTO(updatedProduct);
+    }
 
-
+    @Override
+    public ProductDTO addFeature (Long productId, Long featureId){
+        //Busco que exista el producto
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Producto no encontrado con id: " + productId
+                ));
+        Feature feature = featureRepository.findById(featureId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Caracteristica no encontrada con id: " + featureId
+                ));
+        product.getFeatures().add(feature);
+        Product updatedProduct = productRepository.save(product);
+        return productMapper.toDTO(updatedProduct);
+    }
+    @Override
+    public ProductDTO removeFeature (Long productId, Long featureId){
+        //Busco que exista el producto
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Producto no encontrado con id: " + productId
+                ));
+        Feature feature = featureRepository.findById(featureId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Caracteristica no encontrada con id: " + featureId
+                ));
+        product.getFeatures().remove(feature);
+        Product updatedProduct = productRepository.save(product);
+        return productMapper.toDTO(updatedProduct);
+    }
+    @Override
+    public List<ProductDTO> findCategoryById(Long categoryId){
+        if(!categoryRepository.existsById(categoryId)){
+            throw new ResourceNotFoundException(
+                    "Categoria no encontrada con ID: " + categoryId
+            );
+        }
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+        return productMapper.toDTOList(products);
+    }
 
 }
+
+
+

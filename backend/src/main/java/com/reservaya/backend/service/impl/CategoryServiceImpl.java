@@ -53,7 +53,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     }
     @Override
-    public CategoryDTO update(CategoryDTO categoryDTO){
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO){
         Category categoryExist = categoryRepository.findById(categoryDTO.getId())
                 .orElseThrow(()->new ResourceNotFoundException(
                         "Categoria no encontrada con ID: " + categoryDTO.getId()
