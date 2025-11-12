@@ -4,6 +4,7 @@ import com.reservaya.backend.dto.UserDTO;
 import com.reservaya.backend.enums.UserRole;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/role")
-    public ResponseEntity<UserDTO> updateRole(@PathVariable Long id, @RequestParam UserRole role) {
+    public ResponseEntity<UserDTO> updateRole(@Valid @PathVariable Long id, @RequestParam UserRole role) {
         UserDTO updated = userService.updateRole(id, role);
         return ResponseEntity.ok(updated);
     }

@@ -1,8 +1,9 @@
 import './ProductDetail.css';
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import ProductGallery from './ProductGallery';
+import { availableIcons } from '../layout/icons';
 
 const ProductDetail = () => {
 
@@ -35,8 +36,8 @@ const ProductDetail = () => {
     const formatPrice = () => {
         if (!product) return '';
         const price = parseFloat(product.price);
-        if(isNaN(price)) return '';
-        const formatted = price.toLocaleString('es-ES', {maximumFractionDigits:2, minimumFractionDigits: 2});
+        if (isNaN(price)) return '';
+        const formatted = price.toLocaleString('es-ES', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
 
         return `${product.currency} ${formatted}`;
     };
@@ -66,16 +67,34 @@ const ProductDetail = () => {
                     <span className='price-label'>Precio: </span>
                     <span className='price-value'>{formatPrice()}</span>
                 </div>
-                <div className='product_detail_location'>
+                <div className='product-detail-location'>
                     <span className='locacion-label'>📍 Ubicación </span>
                     <span className='location-value'>{product.location}</span>
                 </div>
 
                 {/*Si tiene categoria la muestro*/}
                 {product.category && (
-                    <div className='product_detail_category'>
+                    <div className='product-detail-category'>
                         <span className='category-label'>🏷️ Categoría:</span>
-                        <span className='category-value'>{product.category}</span>
+                        <span className='category-value'>{product.category?.name}</span>
+                    </div>
+                )}
+                {/**Caracteristicas */}
+                {product.features && product.features.length > 0 && (
+                    <div className='product-detail-features'>
+                        <h3>Caracteristicas</h3>
+                        <div className='features-grid'>
+                            {product.features.map(feature => (
+                                <div key={feature.id} className='feature-item'>
+                                    <span>{(() => {
+                                        const IconComponent = availableIcons[feature.icon]?.component;
+                                        return IconComponent ? <IconComponent size={18} /> : '❓';
+                                    })()} </span>
+                                    <span className='feature-name'>{feature.name}</span>
+                                </div>
+                            ))}
+
+                        </div>
                     </div>
                 )}
             </div>

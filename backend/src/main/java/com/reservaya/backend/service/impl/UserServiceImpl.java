@@ -3,6 +3,8 @@ package com.reservaya.backend.service.impl;
 import com.reservaya.backend.dto.UserDTO;
 import com.reservaya.backend.entity.User;
 import com.reservaya.backend.enums.UserRole;
+import com.reservaya.backend.exception.BadRequestException;
+import com.reservaya.backend.exception.DuplicateResourceException;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.mapper.UserMapper;
 import com.reservaya.backend.repository.IUserRepository;
@@ -82,11 +84,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO register(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Ya existe un usuario con el email: " + userDTO.getEmail());
+            throw new DuplicateResourceException("Ya existe un usuario con el email: " + userDTO.getEmail());
         }
         //Valido si las contraseñas coinciden
         if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-            throw new IllegalArgumentException("Las contraseñas no coinciden");
+            throw new BadRequestException("Las contraseñas no coinciden");
         }
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 

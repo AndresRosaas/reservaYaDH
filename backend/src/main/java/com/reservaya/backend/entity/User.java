@@ -20,7 +20,7 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private UserRole role;
 
@@ -33,7 +33,7 @@ public class User {
     }
     //Constructor para crear el usuario
 
-    public User(UserRole role, String password, String email, String lastName, String firstName) {
+    public User(String password, String email, String lastName, String firstName) {
         this.role = UserRole.USER;
         this.password = password;
         this.email = email;

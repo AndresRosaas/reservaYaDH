@@ -1,8 +1,15 @@
 package com.reservaya.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class FeatureDTO {
     private Long id;
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     private String name;
+    @NotBlank(message = "El icono es obligatorio")
+    @Size(max = 50, message = "El icono no puede tener mas de 50 caracteres")
     private String icon; // URL o clase CSS del icono
 
     public FeatureDTO() {

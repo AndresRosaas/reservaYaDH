@@ -4,7 +4,7 @@ import './ProductList.css';
 import api from "../../services/api";
 
 //Listo los componentes que traigo desde el backend, y que este vacio al inicio
-const ProductList = () => {
+const ProductList = ({ selectedCategory }) => {
     //useState para manejar el estado de los productos
     const [products, setProducts] = useState([]);
     //useState para saber si estoy cargando los productos
@@ -36,8 +36,13 @@ const ProductList = () => {
             setLoading(false);
 
         }
-};
-//Ahora hago la funcion que se ejecuta cuando hago click en un producto
+    };
+    //Filtro los productos seleccionados
+    const filteredProducts = selectedCategory
+        ? products.filter(p => p.category?.id === selectedCategory)
+        : products;
+
+    //Ahora hago la funcion que se ejecuta cuando hago click en un producto
     const handleProductClick = (id) => {
         window.location.href = `/products/${id}`;
     };
@@ -54,28 +59,36 @@ const ProductList = () => {
         );
     }
     //si no hay productos, muestro un mensaje
-    if (products.length === 0) {
-        return <div className="loading">No hay productos disponibles.</div>;
+    if (filteredProducts.length === 0) {
+        return (
+            <div className="loading">
+                {selectedCategory
+                    ? 'No hay productos en esta categoria'
+                    : 'No hay productos disponibles'}
+            </div>
+        )
     }
     //Si todo esta bien, muestro la lista de productos
     return (
         <div className="product-list-container">
-            <h2 className="product-list-title">Productos Destacados</h2>
+            <h2 className="product-list-title">
+                {selectedCategory
+                ? 'Productos Filtrados'
+                : 'Productos Destacados'}</h2>
             {/*Grid de productos*/}
             {/* .map para recorrer el array de productos y renderizar un ProductCard por cada uno */}
-            <div className="product-list">
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.id} //React necesita una key
-                        product={product} //Paso el producto al ProductCard
-                        onClick={handleProductClick} //Paso la funcion que se ejecuta al hacer click
-                    />
-                ))}
-            </div>  
+           <div className="product-list">
+                    {filteredProducts.length === 0 ? (
+                        <p>No hay productos en esta categoria</p>
+                    ): (
+                        filteredProducts.map(product => (
+                            <ProductCard key={product.id} product={product} onClick={()=>handleProductClick(product.id)}/>
+                        ))
+                    )}
+           </div>
         </div>
     );
-};  
+};
 
 
 export default ProductList;
-            

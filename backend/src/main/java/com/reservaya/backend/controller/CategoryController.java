@@ -4,6 +4,7 @@ import com.reservaya.backend.dto.CategoryDTO;
 import com.reservaya.backend.entity.Category;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.service.ICategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/categories")
 public class CategoryController {
 
     private final ICategoryService categoryService;
@@ -25,7 +26,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTO>> findAll(){return ResponseEntity.ok(categoryService.findAll());}
 
     @PostMapping //Solo admin
-    public ResponseEntity<CategoryDTO> save(@RequestBody CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> save(@Valid @RequestBody CategoryDTO categoryDTO){
         CategoryDTO saved = categoryService.save(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);}
 
@@ -46,7 +47,7 @@ public class CategoryController {
         return ResponseEntity.ok("Se elimino la categoria con ID: " + id);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto){
+    public ResponseEntity<CategoryDTO> update(@Valid @PathVariable Long id, @RequestBody CategoryDTO dto){
         CategoryDTO updated = categoryService.update(id, dto);
         return ResponseEntity.noContent().build();
     }

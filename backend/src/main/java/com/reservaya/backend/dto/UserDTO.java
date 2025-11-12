@@ -1,12 +1,27 @@
 package com.reservaya.backend.dto;
 
 import com.reservaya.backend.enums.UserRole;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class UserDTO {
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     private String firstName;
+    @NotBlank(message = "El apellido es obligatorio")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     private String lastName;
+    @NotBlank(message = "El email es obligatorio")
+    @Email( message = "El nombre debe ser valido")
     private String email;
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "La contraseña debe tener 8 caracteres")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[0-9]).*$",
+            message = "La contraseña debe contener al menos una mayúscula y un número")
     private String password;
+    @NotBlank(message = "Debe confirmar la contraseña")
     private String confirmPassword;
     private UserRole role;
     private String avatar; //Imagen o iniciales

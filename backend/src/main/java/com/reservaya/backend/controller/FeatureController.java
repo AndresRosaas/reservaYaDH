@@ -3,6 +3,7 @@ package com.reservaya.backend.controller;
 import com.reservaya.backend.dto.FeatureDTO;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.service.IFeatureService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class FeatureController {
     }
 
     @PostMapping //Crear nueva Feature, solo admin
-    public ResponseEntity<FeatureDTO> create(@RequestBody FeatureDTO dto) {
+    public ResponseEntity<FeatureDTO> create(@Valid @RequestBody FeatureDTO dto) {
         FeatureDTO saved = featureService.save(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
@@ -47,7 +48,7 @@ public class FeatureController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody FeatureDTO featureDTO) {
+    public ResponseEntity<?> update(@Valid @PathVariable Long id, @RequestBody FeatureDTO featureDTO) {
         FeatureDTO featureUpdate = featureService.update(id, featureDTO);
         return ResponseEntity.ok(featureUpdate);
 

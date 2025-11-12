@@ -1,12 +1,34 @@
 import './Header.css';
+import { useAuth } from '../../hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
+function Header() {
+    const navigate = useNavigate();
+    const { user, isAuthenticated, isAdmin, logout } = useAuth();
+    const [showMenu, setShowMenu] = useState(false);
+    const toggleMenu = () => setShowMenu(!showMenu);
+
+    //UseEffect para cerrar si se toca afuera
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (showMenu && !e.target.closest('.user-menu')) {
+                setShowMenu(false);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [showMenu]);
+
+    const handleLogout = () => {
+        logout();
+        setShowMenu(false);
+        navigate('/');
+    };
     const handleLogoClick = () => {
-        window.location.href = '/';
+        navigate('/');
     };
-    const handleAdminClick = () => {
-        window.location.href = '/administracion';
-    };
+
 
     return (
         <header className="header">
@@ -19,13 +41,52 @@ const Header = () => {
                     </div>
                 </div>
                 <div className='header-buttons'>
-                    {/* Botón de administrador temporal*/}
-                    <button className="btn btn-outline">Crear cuenta</button>
-                    <button className="btn btn-outline">Iniciar sesión</button>
-                    <button className="btn btn-outline" onClick={handleAdminClick} title="Panel de administración">⚙️ Admin</button>
+                    {/* si no esta autenticado*/}
+                    {!isAuthenticated() ? (
+                        <>
+                            <button className="btn btn-outline" onClick={() => navigate('/registro')}>Crear cuenta</button>
+                            <button className="btn btn-outline" onClick={() => navigate('/login')}>Iniciar sesión</button>
+                        </>
+                    ) : (
+                        // si SI esta autenticado
+                        < div className='user-menu'>
+                            <button onClick={toggleMenu} className='user-avatar'>
+                                <span className='avatar-initials'>{user.firstName[0]}{user.lastName[0]}</span>
+                            </button>
+
+
+                            {showMenu && (
+                                <div className='dropdown-menu'>
+                                    <div className='dropdown-header'>
+                                        <p className='user-fullname'>Hola {user.firstName} {user.lastName}</p>
+                                    </div>
+                                    <button onClick={() => navigate('/perfil')}>
+                                        👤 Mi Perfil
+                                    </button>
+                                    <button onClick={() => navigate('/mis-reservas')}>
+                                        📋 Mis Reservas
+                                    </button>
+                                    <button onClick={() => navigate('/favoritos')}>
+                                        ⭐ Favoritos
+                                    </button>
+                                    {/**Solo si es admin */}
+                                    {isAdmin() && (
+                                        <>
+                                            <div className='dropdown-divider'></div>
+                                            <button onClick={() => navigate('/administracion')}>⚙️ Admin</button>
+                                        </>
+                                    )}
+                                    <div className='dropdown-divider'></div>
+                                    <button onClick={handleLogout}>🚪 Cerrar sesión</button>
+                                </div>
+                            )}
+                        </div>
+
+                    )}
                 </div>
             </div>
-        </header>
+
+        </header >
     );
-};
+}
 export default Header;

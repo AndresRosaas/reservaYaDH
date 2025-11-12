@@ -15,7 +15,8 @@
 
 .product-detail-price,
 .product-detail-location,
-.product-detail-category {
+.product-detail-category,
+.product-detail-features {
   background: var(--accent-lighter);
   padding: 1.5rem;
   border-radius: var(--radius-md);

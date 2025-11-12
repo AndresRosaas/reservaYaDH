@@ -4,8 +4,6 @@ import api from '../services/api';
 import MainLayout from '../components/layout/MainLayout';
 import './ProductDetailPage.css';
 import ProductDetail from '../components/products/ProductDetail';
-import ProductGallery from '../components/products/ProductGallery';
-
 
 //Esta pagina se activa cuando entras a /product/:id
 
@@ -35,7 +33,7 @@ const ProductDetailPage = () => {
             }
         };
         fetchProduct();
-    }, [id]);//El efecto se vuelve a ejecutar si el id cambia
+    }, [id]);//El effect se vuelve a ejecutar si el id cambia
 
 
     const handleBack = () => {

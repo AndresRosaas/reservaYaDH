@@ -2,9 +2,9 @@
   width: 100%;
   background: linear-gradient(135deg, var(--primary-600) 0%, var(--secondary-500) 100%);
   padding: 1rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: var(--radius-lg);
+  margin-bottom: 0.5rem;
   box-shadow: var(--shadow-lg);
+  margin-top: 4rem;
 }
 
 .search-bar-content {
@@ -23,7 +23,7 @@
 .search-bar-subtitle {
   font-size: 1.125rem;
   color: var(--accent-lighter);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* Formulario de búsqueda */

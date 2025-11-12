@@ -5,7 +5,7 @@ const SearchBar = () => {
     return (
         <div className='search-bar'>
             <div className='search-bar-content'>
-                <h2 className='search-bar-title'>Encontra tu espacio ideal</h2>
+                
                 <p className='search-bar-subtitle'>Busca por ubicacion y fechas disponibles</p>
                 <div className='search-bar-form'>
                     <div className='search-field'>{/*campo de ubicacion busqueda*/}

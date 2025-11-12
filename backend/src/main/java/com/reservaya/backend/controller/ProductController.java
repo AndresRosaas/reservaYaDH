@@ -3,6 +3,7 @@ package com.reservaya.backend.controller;
 import com.reservaya.backend.dto.ProductDTO;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.service.IProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> save(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO saved = productService.save(productDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 
@@ -54,21 +55,21 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> update(@Valid @PathVariable Long id, @RequestBody ProductDTO productDTO) {
                     ProductDTO productUpdate = productService.update(id, productDTO);
-            return ResponseEntity.ok(productUpdate);
+           return ResponseEntity.ok(productUpdate);
 
     }
 
     @PutMapping("/{productId}/category/{categoryId}")
-    public ResponseEntity<ProductDTO> assignCategory(@PathVariable Long productId, @PathVariable Long categoryID) {
+    public ResponseEntity<ProductDTO> assignCategory(@Valid @PathVariable Long productId, @PathVariable Long categoryID) {
         ProductDTO updated = productService.assignCategory(productId, categoryID);
         return ResponseEntity.ok(updated);
     }
 
     //sumar feature - ADMIN
     @PostMapping("/{productId}/features/{featureId}")
-    public ResponseEntity<ProductDTO> addFeature(@PathVariable Long productId, @PathVariable Long featureId) {
+    public ResponseEntity<ProductDTO> addFeature(@Valid @PathVariable Long productId, @PathVariable Long featureId) {
         ProductDTO updated = productService.addFeature(productId, featureId);
         return ResponseEntity.ok(updated);
     }

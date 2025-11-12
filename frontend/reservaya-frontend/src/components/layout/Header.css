@@ -94,3 +94,158 @@
     font-size: 0.75rem;
   }
 }
+/* === USER MENU (Usuario logueado) === */
+
+.user-menu {
+  position: relative;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  transition: background 0.3s ease;
+}
+
+.user-avatar:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Avatar circular con iniciales */
+.avatar-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--secondary-500) 0%, var(--accent) 100%);
+  color: var(--primary-800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-md);
+}
+
+/* Nombre del usuario */
+.user-name {
+  font-weight: 600;
+  color: white;
+  font-size: 0.95rem;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  padding: 0.5rem;
+  z-index: 1001;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-menu button:hover {
+  background: var(--warm);
+  color: var(--primary-600);
+}
+
+/* Link al panel de admin (cuando es admin) */
+.admin-link {
+  padding: 0.5rem 1rem;
+  background: var(--secondary-500);
+  color: var(--primary-800);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.admin-link:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* === RESPONSIVE ADICIONAL === */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .user-name {
+    max-width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  /* Ocultar nombre de usuario en mobil, solo avatar */
+  .user-name {
+    display: none;
+  }
+
+  .user-avatar {
+    padding: 0.5rem;
+  }
+
+  .avatar-initials {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .dropdown-menu {
+    right: -10px; 
+    min-width: 160px;
+  }
+
+  .admin-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}

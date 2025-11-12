@@ -2,6 +2,7 @@ package com.reservaya.backend.service.impl;
 
 import com.reservaya.backend.dto.FeatureDTO;
 import com.reservaya.backend.entity.Feature;
+import com.reservaya.backend.exception.DuplicateResourceException;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.mapper.FeatureMapper;
 import com.reservaya.backend.repository.IFeatureRepository;
@@ -48,7 +49,7 @@ public class FeatureServiceImpl implements IFeatureService {
         // Ahora tengo que fijarme si la caracteristica con ese nombre existe
         if (!existsFeature.getName().equals(featureDTO.getName())
                 && featureRepository.existsByName(featureDTO.getName())) {
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "Ya existe una caracteristica con el nombre: " + featureDTO.getName()
             );
         }

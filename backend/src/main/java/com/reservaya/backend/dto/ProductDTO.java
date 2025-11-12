@@ -1,30 +1,43 @@
 package com.reservaya.backend.dto;
 
+import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDTO {
     private Long id;
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(min = 3, max = 100, message = "El nombre debe tener entre 3 y 100 caracteres")
     private String name;
+    @NotBlank(message = "La descripcion es obligatoria")
+    @Size(min = 3, max = 2000, message = "La descripcion debe tener entre 3 y 2000 caracteres")
     private String description;
+    @NotBlank(message = "La ubicacion es obligatoria")
     private String location;
-
+    @NotNull(message = "El precio es obligatorio")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor a 0")
     private BigDecimal price;
+    @Size(max = 10)
     private String currency; // puedo poner mas de una moneda y que calcule
 
     //relacion producto categoria
     private String categoryName;
+
     private Long categoryId;
     private CategoryDTO category;
 
     //Imagenes del producto
+    @NotEmpty(message = "Debe incluir al menos una imagen")
     private List<String> imageUrls;
     private String mainImageUrl;
 
     //Caracteristicas
     private List<FeatureDTO> features;
+    private List<Long> featuresIds;
 
     //Politicas
+    @Size(max = 5000, message = "Las políticas no pueden superar 5000 caracteres")
     private String policies;
 
     //Puntuacion promedio
@@ -175,5 +188,13 @@ public class ProductDTO {
 
     public void setTotalRating(Integer totalRating) {
         this.totalRating = totalRating;
+    }
+
+    public List<Long> getFeaturesIds() {
+        return featuresIds;
+    }
+
+    public void setFeaturesIds(List<Long> featuresIds) {
+        this.featuresIds = featuresIds;
     }
 }

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,9 +70,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductDTO update(Long id, ProductDTO productDTO){
         //Verifico si el producto existe
-        Product existProduct = productRepository.findById(productDTO.getId())
+        Product existProduct = productRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException(
-                        "Producto no encontrado con ID: " +productDTO.getId()
+                        "Producto no encontrado con ID: " + id
                 ));
         //Actualizo los campos que llegan
         existProduct.setName(productDTO.getName());
@@ -81,8 +83,16 @@ public class ProductServiceImpl implements IProductService {
         existProduct.setPolicies(productDTO.getPolicies());
 
         //Si llegan imagenes tambien tengo que actualizarla
-        if(productDTO.getMainImageUrl() != null){
-            existProduct.setImageUrls(productDTO.getImageUrls());
+        if(productDTO.getMainImageUrl() != null && productDTO.getImageUrls().isEmpty()){
+            List<String> updatedImages = new ArrayList<>();
+
+            //guardo las que ya hay
+            if(existProduct.getImageUrls() != null){
+                updatedImages.addAll(existProduct.getImageUrls());
+            }
+            //sumo las nuevas
+            updatedImages.addAll(productDTO.getImageUrls());
+            existProduct.setImageUrls(updatedImages);
         }
         //Si se cambio la categoria la tengo que actualizar
         if(productDTO.getCategoryId()!=null){
@@ -92,6 +102,12 @@ public class ProductServiceImpl implements IProductService {
                     ));
             existProduct.setCategory(category);
         }
+        if(productDTO.getFeaturesIds() != null){
+            List<Feature> newFeatures = featureRepository.findAllById(productDTO.getFeaturesIds());
+            existProduct.setFeatures(new HashSet<>(newFeatures));
+        }
+
+
         //Guardo los cambios
         Product updateProduct = productRepository.save(existProduct);
         //Convierto a DTO la entidad y la devuelvo

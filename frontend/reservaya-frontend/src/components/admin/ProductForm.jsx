@@ -1,35 +1,55 @@
 import { useState, useEffect } from "react";
-import './ProductForm.css';
+import './AdminPanel.css';
 import api from '../../services/api';
+import { availableIcons } from "../layout/icons";
 
 //Formulario para agregar productos
-const ProductForm = ({ onSuccess }) => {
+const ProductForm = ({ product = null, onCancel, onSuccess }) => {
 
     const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        location: '',
-        price: '',
-        currency: 'ARS',
-        categoryId: '',
-        imageUrls: ['']
+        name: product?.name || '',
+        description: product?.description || '',
+        location: product?.location || '',
+        price: product?.price || '',
+        currency: product?.currency || 'ARS',
+        categoryId: product?.category?.id || '',
+        imageUrls: product?.imageUrls || ['']
     });
+    const isEditMode = product !== null;
     //Estado para las categorias que esten disponibles
     const [categories, setCategories] = useState([]);
+    const [features, setFeatures] = useState([]);
+    const [selectedFeaturesId, setSelectedFeaturesIds] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     //UseEffect para cargar las categorias disponibles al cargar el componente
     useEffect(() => {
         fetchCategories();
+        fetchFeatures();
     }, []);
     //Funcion para obtener las categorias desde la API
     const fetchCategories = async () => {
         try {
-            const response = await api.get('/category');
+            const response = await api.get('/categories');
             setCategories(response.data);
         } catch (err) {
             console.error('Error al cargar categorias: ', err);
             //puede avanzar sin categorias
+        }
+    };
+    useEffect(() => {
+        if (product && product.features) {
+            const featuresIds = product.features.map(f => f.id);
+            setSelectedFeaturesIds(featuresIds);
+        }
+    }, [product]);
+    const fetchFeatures = async () => {
+        try {
+            const response = await api.get('/features');
+            setFeatures(response.data);
+        } catch (err) {
+            console.error('Error al cargar caracteristicas: ', err);
+            //puede avanzar sin caracteristicas
         }
     };
     const handleInputChange = (e) => {
@@ -38,6 +58,12 @@ const ProductForm = ({ onSuccess }) => {
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleToggleFeature = (id) => {
+        setSelectedFeaturesIds(prev =>
+            prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+        );
     };
     const handleImageChange = (index, value) => {
         const newImageUrls = [...formData.imageUrls];
@@ -60,7 +86,7 @@ const ProductForm = ({ onSuccess }) => {
             imageUrls: newImageUrls
         }));
     }
-   
+
 
     const validateForm = () => {
         if (!formData.name.trim()) {
@@ -80,7 +106,7 @@ const ProductForm = ({ onSuccess }) => {
             return false;
         }
         const validImages = formData.imageUrls.filter(url => url.trim() !== '');
-        if (validImages.length === 0) {
+        if (!isEditMode && validImages.length === 0) {
             setError('Debe agregar al menos una URL de imagen válida.');
             return false;
         }
@@ -95,44 +121,74 @@ const ProductForm = ({ onSuccess }) => {
         }
         try {
             setLoading(true);
-            const validImages = formData.imageUrls.filter(url => url.trim() !== '');
-            //preparo los datos para enviar a la API
-            const productData = {
-                name: formData.name.trim(),
-                description: formData.description.trim(),
-                location: formData.location.trim(),
-                price: parseFloat(formData.price),
-                currency: formData.currency,
-                imageUrls: validImages,
-                mainImageUrl: validImages[0] || '' 
-            };
-            //m,e falta sumar la categoria
-            if (formData.categoryId) {
-                productData.categoryId = parseInt(formData.categoryId) ;
+            if (isEditMode) {
+                //SI EDITO
+                const upperData = {
+                    name: formData.name.trim(),
+                    description: formData.description.trim(),
+                    location: formData.location.trim(),
+                    price: parseFloat(formData.price),
+                    currency: formData.currency,
+                };
+                //agrego categoria
+                if (formData.categoryId) {
+                    upperData.categoryId = parseInt(formData.categoryId);
+                }
+                //agrego caracteristicas
+                if (selectedFeaturesId.length > 0) {
+                    upperData.featuresIds = selectedFeaturesId;
+                }
+                const validImages = formData.imageUrls.filter(url => url.trim() !== '');
+                if (validImages.length > 0) {
+                    upperData.imageUrls = validImages;
+                    upperData.mainImageUrl = validImages[0];
+                }
+
+                console.log('🔵 Frontend enviando PUT:', upperData); // ← AGREGAR ESTO
+                console.log('🔵 Features IDs:', selectedFeaturesId);
+                await api.put(`/products/${product.id}`, upperData);
+                alert('Producto actualizado con exito')
+            } else {
+                const validImages = formData.imageUrls.filter(url => url.trim() !== '');
+                //preparo los datos para enviar a la API
+                const productData = {
+                    name: formData.name.trim(),
+                    description: formData.description.trim(),
+                    location: formData.location.trim(),
+                    price: parseFloat(formData.price),
+                    currency: formData.currency,
+                    imageUrls: validImages,
+                    mainImageUrl: validImages[0] || ''
+                };
+                //m,e falta sumar la categoria
+                if (formData.categoryId) productData.categoryId = parseInt(formData.categoryId);
+                if (selectedFeaturesId.length > 0) {
+                    productData.featuresIds = selectedFeaturesId;
+                }
+
+
+                //Envio los datos a la API
+                const response = await api.post('/products', productData);
+
+                //Limpio el formulario
+                setFormData({
+                    name: '',
+                    description: '',
+                    location: '',
+                    price: '',
+                    currency: 'ARS',
+                    categoryId: '',
+                    imageUrls: ['']
+                });
+
+
+
             }
-
-            console.log('📤 Enviando al backend:', JSON.stringify(productData, null, 2));
-            //Envio los datos a la API
-            const response = await api.post('/products', productData);
-            console.log('📥 Respuesta del backend:', response.data);
-
-            //const response = console.log('📥 Respuesta del backend:', response.data);
-
-            //Limpio el formulario
-            setFormData({
-                name: '',
-                description: '',
-                location: '',
-                price: '',
-                currency: 'ARS',
-                categoryId: '',
-                imageUrls: ['']
-            });
+            setSelectedFeaturesIds([]);
 
 
             //Si todo va bien, llamo al onSuccess para notificar al padre
             onSuccess();
-            
         } catch (err) {
             if (err.response?.data?.includes('Ya existe un producto')) {
                 setError('Ya existe un producto con ese nombre.');
@@ -268,14 +324,49 @@ const ProductForm = ({ onSuccess }) => {
                     + Agregar otra imagen
                 </button>
             </div>
+            {/**Caracteristicas con checkboxes */}
+            {features.length > 0 && (
+                <div className="form-group">
+                    <label>Caracteristicas:</label>
+                    <div className="checkbox-group">
+                        {features.map(feat => (
+                            <div key={feat.id} className="checkbox-item">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedFeaturesId.includes(feat.id)}
+                                        onChange={() => handleToggleFeature(feat.id)}
+                                        disabled={loading}
+                                    />
+                                    {(() => {
+                                        const IconComponent = availableIcons[feat.icon]?.component;
+                                        return IconComponent ? <IconComponent size={18} /> : '❓';
+                                    })()}
+                                </label>
+                            </div>
+                        ))}
+
+                    </div>
+                </div>
+            )}
             {/*Error*/}
             {error && <div className="form-error">{error}</div>}
             {/*Submit*/}
             <div className="form-action">
                 <button type="submit" className="btn btn-primary" disabled={loading}>
-                    {loading ? 'Creando...' : 'Crear Producto'}
+                    {isEditMode ? 'Actualizar' : 'Crear'} Producto
                 </button>
+                {isEditMode && (
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={onCancel}
+                    >
+                        Cancelar
+                    </button>
+                )}
             </div>
+
         </form>
     );
 };

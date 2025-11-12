@@ -9,10 +9,12 @@ import com.reservaya.backend.mapper.CategoryMapper;
 import com.reservaya.backend.repository.ICategoryRepository;
 import com.reservaya.backend.service.ICategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
+@RestController
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
@@ -54,11 +56,11 @@ public class CategoryServiceImpl implements ICategoryService {
     }
     @Override
     public CategoryDTO update(Long id, CategoryDTO categoryDTO){
-        Category categoryExist = categoryRepository.findById(categoryDTO.getId())
+        Category categoryExist = categoryRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException(
-                        "Categoria no encontrada con ID: " + categoryDTO.getId()
+                        "Categoria no encontrada con ID: " + id
                 ));
-        categoryExist.setId(categoryDTO.getId());
+
         categoryExist.setName(categoryDTO.getName());
         categoryExist.setDescription(categoryDTO.getDescription());
 

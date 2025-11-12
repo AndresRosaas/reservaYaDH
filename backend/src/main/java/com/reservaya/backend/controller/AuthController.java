@@ -4,6 +4,7 @@ import com.reservaya.backend.dto.LoginRequestDTO;
 import com.reservaya.backend.dto.LoginResponseDTO;
 import com.reservaya.backend.dto.UserDTO;
 import com.reservaya.backend.service.IAuthenticationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +22,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> register (@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> register (@Valid @RequestBody UserDTO userDTO){
         UserDTO registered = authenticationService.register(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(registered);
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login (@RequestBody LoginRequestDTO loginRequest){
+    public ResponseEntity<LoginResponseDTO> login (@Valid @RequestBody LoginRequestDTO loginRequest){
         LoginResponseDTO response = authenticationService.login(loginRequest);
         return ResponseEntity.ok(response);
     }

@@ -1,10 +1,12 @@
 import './AdminPage.css';
-import{ useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AdminPanel from '../components/admin/AdminPanel'
+import AdminSideBar from '../components/admin/AdminSideBar';
 
 const AdminPage = () => {
     //Tengo que ver si es celular o no
     const [isMobile, setIsMobile] = useState(false);
+    const [currentSection, setCurrentSection] = useState('products');
     //UseEffect para ver el tamaño de la pantalla
     useEffect(() => {
         const handleResize = () => {
@@ -14,38 +16,33 @@ const AdminPage = () => {
         handleResize();
         //Escucho el resize
         window.addEventListener('resize', handleResize);
-        return () => 
+        return () =>
             window.removeEventListener('resize', handleResize);
-        }, []);
-    
-        //Si es movil o no
-        if(isMobile){
-            return (
-                <div className='admin-mobile-message'>
-                    <div>
-                        <h1>🖥️Panel de administracion</h1>
-                        <p>Seccion unicamente disponible para dispositivos de escritorio</p>
-                        <p>Por favor accede desde una compu para gestionar los productos.</p>
-                        <button className='btn btn-primary' onClick={()=> window.location.href = '/'}>Volver a inicio</button>
-                    </div>
+    }, []);
+
+    //Si es movil o no
+    if (isMobile) {
+        return (
+            <div className='admin-mobile-message'>
+                <div>
+                    <h1>🖥️Panel de administracion</h1>
+                    <p>Seccion unicamente disponible para dispositivos de escritorio</p>
+                    <p>Por favor accede desde una compu para gestionar los productos.</p>
+                    <button className='btn btn-primary' onClick={() => window.location.href = '/'}>Volver a inicio</button>
                 </div>
-            );
-        }
-    //Si es compu muestro el panel
-    return (
-        <div className="admin-page">
-            <div className='admin-header'>
-                <h1>Panel de administacion</h1>
-                <button className='btn btn-outline'onClick={()=> window.location.href = '/'}>
-                    ← Volver al sitio
-                </button>
             </div>
-            <AdminPanel />
+        );
+    }
+    
+    return (
+        <div className='admin-layout'>
+            <AdminSideBar
+                currentSection={currentSection}
+                onNavigate={setCurrentSection}
+            />
+            <main className='admin-main'>
+                <AdminPanel currentSection={currentSection}/>
+            </main>
         </div>
     );
-            
-
-
-
-};
-export default AdminPage;
+}; export default AdminPage;
