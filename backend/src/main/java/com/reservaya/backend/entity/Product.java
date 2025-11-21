@@ -49,6 +49,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "favoriteProduct")
+    private Set<User> favoritedBy = new HashSet<>();
+
     public Product() {
         this.currency = "ARS";
     }
@@ -158,5 +161,13 @@ public class Product {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public Set<User> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    public void setFavoritedBy(Set<User> favoritedBy) {
+        this.favoritedBy = favoritedBy;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +22,13 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     List<Product> findRandomProducts(Pageable pageable);
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.id =:id")
     Optional<Product> findByIdWithCategory(@Param("id") Long id);
+    @Query("SELECT p FROM Product p WHERE NOT EXISTS (" +
+            "SELECT r FROM Reservation r WHERE r.product = p " +
+            "AND r.status != 'CANCELLED' " +
+            "AND ((r.startDate <= :endDate) AND (r.endDate >= :startDate))" +
+            ")")
+    List<Product> findAvailableProducts(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
 
 }

@@ -2,6 +2,7 @@ package com.reservaya.backend.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -45,6 +46,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/**").permitAll()
                         .requestMatchers("/api/categories/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/product/**").permitAll()
                         //Solo ADMIN
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/features/**").hasRole("ADMIN")

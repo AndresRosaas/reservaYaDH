@@ -7,6 +7,7 @@ import com.reservaya.backend.entity.Product;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.mapper.CategoryMapper;
 import com.reservaya.backend.repository.ICategoryRepository;
+import com.reservaya.backend.repository.IProductRepository;
 import com.reservaya.backend.service.ICategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,15 +21,17 @@ public class CategoryServiceImpl implements ICategoryService {
 
     private final ICategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final IProductRepository productRepository;
 
-    public CategoryServiceImpl(ICategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(ICategoryRepository categoryRepository, CategoryMapper categoryMapper, IProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.productRepository = productRepository;
     }
 
     //Guardo la categoria creada
     @Override
-    public CategoryDTO save(CategoryDTO categoryDTO){
+    public CategoryDTO save(CategoryDTO categoryDTO) {
         Category category = categoryMapper.toEntity(categoryDTO);
         Category saved = categoryRepository.save(category);
         return categoryMapper.toDTO(saved);
@@ -43,21 +46,35 @@ public class CategoryServiceImpl implements ICategoryService {
 
     //Borrar
     @Override
-    public void delete(Long id) throws ResourceNotFoundException{
-        if(!categoryRepository.existsById(id)){
+    public void delete(Long id) throws ResourceNotFoundException {
+        if (!categoryRepository.existsById(id)) {
             throw new ResourceNotFoundException("NO se encontro la categoria con ID: " + id);
-        }categoryRepository.deleteById(id);
         }
+        List<Product> products = productRepository.findByCategoryId(id);
+
+        if (!products.isEmpty()) {
+            throw new IllegalStateException(
+                    "No se puede eliminar la categoría porque tiene " +
+                            products.size() + " producto(s) asociado(s). " +
+                            "Primero desvincule o elimine los productos."
+            );
+        }
+
+
+        categoryRepository.deleteById(id);
+    }
+
     @Override
-    public List<CategoryDTO> findAll(){
+    public List<CategoryDTO> findAll() {
         List<Category> categoryDTOS = categoryRepository.findAll();
         return categoryMapper.toDTOList(categoryDTOS);
 
     }
+
     @Override
-    public CategoryDTO update(Long id, CategoryDTO categoryDTO){
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
         Category categoryExist = categoryRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Categoria no encontrada con ID: " + id
                 ));
 

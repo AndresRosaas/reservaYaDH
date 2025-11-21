@@ -4,7 +4,9 @@ import com.reservaya.backend.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +29,14 @@ public class User {
     //Relaciono al usuario con las reservas
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> favoriteProduct = new HashSet<>();
 
     public User() {
         this.role = UserRole.USER;
@@ -105,5 +115,13 @@ public class User {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public Set<Product> getFavoriteProduct() {
+        return favoriteProduct;
+    }
+
+    public void setFavoriteProduct(Set<Product> favoriteProduct) {
+        this.favoriteProduct = favoriteProduct;
     }
 }

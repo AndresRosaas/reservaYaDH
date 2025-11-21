@@ -1,10 +1,14 @@
 package com.reservaya.backend.service;
 
+import com.reservaya.backend.dto.DateRangeDTO;
+import com.reservaya.backend.dto.ProductAvailabilityDTO;
 import com.reservaya.backend.dto.ProductDTO;
+import com.reservaya.backend.dto.ProductSearchDTO;
 import com.reservaya.backend.entity.Product;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +33,11 @@ public interface IProductService {
     ProductDTO addFeature(Long productId, Long featureId);
     ProductDTO removeFeature (Long productId, Long featureId);
     List<ProductDTO> findCategoryById(Long categoryId);
-
+    //Busqueda
+    List<ProductDTO> searchAvailableProducts(ProductSearchDTO searchDTO);
+    //veo si esta disponible
+    ProductAvailabilityDTO getAvailability (Long productId, LocalDate startDate, LocalDate endDate);
+    List<String> getUniqueLocations(String search);
 
 
 

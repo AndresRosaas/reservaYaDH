@@ -1,6 +1,7 @@
 package com.reservaya.backend.repository;
 
 import com.reservaya.backend.entity.Reservation;
+import com.reservaya.backend.enums.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,12 +13,16 @@ import java.util.List;
 @Repository
 public interface IReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByUserId(Long userId);
+
     @Query("SELECT r FROM Reservation r WHERE r.product.id = :productId " +
             "AND r.status != 'CANCELLED' " +
-            "AND ((r.startDate <= :endDate) AND (r.endDate >= :startDate))")//me aseguro de que no se solapen las reservas
+            "AND ((r.startDate <= :endDate) " +
+            "AND (r.endDate >= :startDate))")
+//me aseguro de que no se solapen las reservas
     List<Reservation> findByProductAndDateRange(
             @Param("productId") Long productId,
-            @Param("startDate")LocalDate startDate,
+            @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
-            );
+    );
+    boolean existsByUserIdAndProductIdAndStatus(Long userId, Long productId, ReservationStatus status);
 }

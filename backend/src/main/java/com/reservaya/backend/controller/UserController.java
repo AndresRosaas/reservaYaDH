@@ -1,8 +1,10 @@
 package com.reservaya.backend.controller;
 
+import com.reservaya.backend.dto.ProductDTO;
 import com.reservaya.backend.dto.UserDTO;
 import com.reservaya.backend.enums.UserRole;
 import com.reservaya.backend.exception.ResourceNotFoundException;
+import com.reservaya.backend.service.IFavoriteService;
 import com.reservaya.backend.service.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,11 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
     private final IUserService userService;
+    private final IFavoriteService favoriteservice;
 
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, IFavoriteService favoriteservice) {
         this.userService = userService;
+        this.favoriteservice = favoriteservice;
     }
 
     //Listar todos los ADMIN
@@ -46,4 +50,27 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/{userId}/favorites/{productId}")
+    public ResponseEntity<Void> addFavorite(
+            @PathVariable("userId") Long userId,
+            @PathVariable("productId") Long productId
+    ){
+        favoriteservice.addFavorite(userId, productId);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("/{userId}/favorites/{productId}")
+    public ResponseEntity<Void> removeFavorite(
+            @PathVariable("userId") Long userId,
+            @PathVariable("productId") Long productId
+    ){
+        favoriteservice.removeFavorite(userId, productId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/favorites")
+    public ResponseEntity<List<ProductDTO>> getFavorites(@PathVariable("userId") Long userId){
+        List<ProductDTO> favorites = favoriteservice.getUserFavorites(userId);
+        return ResponseEntity.ok(favorites);
+    }
+
 }

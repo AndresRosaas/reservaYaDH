@@ -1,13 +1,19 @@
 package com.reservaya.backend.controller;
 
+import com.reservaya.backend.dto.DateRangeDTO;
+import com.reservaya.backend.dto.ProductAvailabilityDTO;
 import com.reservaya.backend.dto.ProductDTO;
+import com.reservaya.backend.dto.ProductSearchDTO;
 import com.reservaya.backend.exception.ResourceNotFoundException;
 import com.reservaya.backend.service.IProductService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,8 +62,8 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> update(@Valid @PathVariable Long id, @RequestBody ProductDTO productDTO) {
-                    ProductDTO productUpdate = productService.update(id, productDTO);
-           return ResponseEntity.ok(productUpdate);
+        ProductDTO productUpdate = productService.update(id, productDTO);
+        return ResponseEntity.ok(productUpdate);
 
     }
 
@@ -88,5 +94,44 @@ public class ProductController {
         return ResponseEntity.ok(productDTOS);
     }
 
+    //disponibilidad del producto
+    @GetMapping("/{id}/availability")
+    public ResponseEntity<ProductAvailabilityDTO> getAvailability(
+            @PathVariable Long id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        ProductAvailabilityDTO availabilityDTO = productService.getAvailability(id, startDate, endDate);
+        return ResponseEntity.ok(availabilityDTO);
+    }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchAvailableProducts(
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+
+            @RequestParam(required = false)
+            String location
+    ) {
+        ProductSearchDTO dto = new ProductSearchDTO();
+        dto.setStartDate(startDate);
+        dto.setEndDate(endDate);
+        dto.setLocation(location);
+
+        List<ProductDTO> products = productService.searchAvailableProducts(dto);
+        return ResponseEntity.ok(products);
+    }
+
+
+    @GetMapping("/locations")
+    public ResponseEntity<List<String>> getLocations(@RequestParam String search) {
+        try {
+            List<String> locations = productService.getUniqueLocations(search);
+            return ResponseEntity.ok(locations);
+        } catch (Exception e) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
+    }
 }
