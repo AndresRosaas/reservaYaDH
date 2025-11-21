@@ -1,4 +1,4 @@
-import { children, createContext, useEffect, useState } from "react";
+import { useContext, createContext, useEffect, useState, useMemo } from "react";
 import api from '../services/api';
 
 //creo el contexto
@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }) => {
     //funcion para regstar al usuario
     const register = async (userData) => {
         try {
+            delete api.defaults.headers.common['Authorization'];
             const response = await api.post('/auth/register', userData);
             const { token, user } = response.data;
             //guardo el session storage
@@ -101,6 +102,7 @@ export const AuthProvider = ({ children }) => {
 
     //verifico si esta autenticado
     const isAuthenticated = () => {
+        if(loading) return false;
         return !!token && !!user;
     };
 
@@ -122,3 +124,4 @@ export const AuthProvider = ({ children }) => {
     );
 
 };
+export const useAuth = () => useContext(AuthContext);

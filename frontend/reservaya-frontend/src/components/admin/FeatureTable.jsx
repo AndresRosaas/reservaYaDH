@@ -3,6 +3,7 @@ import DeleteConfirmModal from "./DeleteConfirmModal";
 import api from '../../services/api';
 import './AdminPanel.css';
 import { availableIcons } from "../layout/icons";
+import { toast } from "react-toastify";
 
 function FeatureTable({refresh, onEdit, onDelete}){
     const [features, setFeatures] = useState([]);
@@ -41,9 +42,9 @@ function FeatureTable({refresh, onEdit, onDelete}){
             setshowDeleteModal(false);
             setFeatureToDelete(null);
             onDelete();
-            alert('Caracteristica eliminada con éxito.');
+            toast.success('Caracteristica eliminada con éxito.');
         } catch (err) {
-            alert('Error al eliminar la caracteristica, asegura que no este en uso.');
+            toast.error('Error al eliminar la caracteristica, asegura que no este en uso.');
             console.error('Error: ', err);
         }
     };

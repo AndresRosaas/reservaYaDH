@@ -34,7 +34,7 @@ function UserTable() {
             ? '¿Estas seguro de quitar permisos de administrador a este usuario?'
             : '¿Estas seguro de otorgar permisos de administrador a este usuario?';
 
-        if (!window.confirm(confirmMessage)) {
+        if (!TableRowsSplit.info(confirmMessage)) {
             return;
         }
 

@@ -3,6 +3,8 @@ import './AdminPanel.css';
 import api from '../../services/api';
 import ProductForm from "./ProductForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import { toast } from "react-toastify";
+
 
 const ProductTable = ({ refresh, onEdit, onNavigate }) => {
     const [products, setProducts] = useState([]);
@@ -46,9 +48,9 @@ const ProductTable = ({ refresh, onEdit, onNavigate }) => {
             setshowDeleteModal(false);
             setProductToDelete(null);
             fetchAllProducts();
-            alert('Producto eliminado con éxito.');
+            toast.error('Producto eliminado con éxito.');
         } catch (err) {
-            alert('Error al eliminar el producto.');
+            toast.error('Error al eliminar el producto.');
             console.error('Error: ', err);
         }
     };

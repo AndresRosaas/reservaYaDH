@@ -1,111 +1,121 @@
-.product-detail {
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: var(--shadow-md);
+/* Contenedor superior: columnas izquierda + derecha centradas */
+.product-detail-top {
+    display: flex;
+    gap: 2rem;
+    margin: 2rem auto 0; /* centrado horizontal */
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    max-width: 1400px;
+    padding: 1 3rem;   /* margen interno para que no quede pegado a los bordes */
+    box-sizing: border-box;
 }
 
-/* Destacados: Precio, ubicación, categoría */
-.product-detail-highlight {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+/* Columna izquierda: flexible */
+.product-detail-left {
+    flex: 0.5 1 auto; /* ocupa espacio disponible */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
+/* Columna derecha: calendario */
+.product-detail-right {
+    flex: 0 0 300px; /* ancho fijo */
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    position: sticky; /* opcional: se queda visible al hacer scroll */
+    top: 2rem;
+}
+
+/* Calendario */
+.product-detail-availability {
+    background: #f7f9fc;
+    border-radius: 12px;
+    border: 1px solid #d0d7e5;
+    padding: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Tags principales: precio, ubicación, categoría */
 .product-detail-price,
 .product-detail-location,
-.product-detail-category,
+.product-detail-category {
+    background: #f3f6ff;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    border-left: 3px solid #4A90E2;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2a3a5f;
+}
+
+/* Features tipo chips */
 .product-detail-features {
-  background: var(--accent-lighter);
-  padding: 1.5rem;
-  border-radius: var(--radius-md);
-  flex-direction: column;
-  display: flex;
-  gap: 1rem;
-  border-left: 4px solid var(--primary-600);
-}
-.product-detail-price{
-  display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0;
 }
 
-.price-label,
-.location-label,
-.category-label {
-  font-size: 0.875rem;
-  color: var(--gray-600);
-  font-weight: 500;
+.feature-item {
+    background: #e8f0fe;
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.price-value {
-  font-size: 2rem;
-  color: var(--primary-600);
-  font-weight: 700;
-}
-
-.location-value,
-.category-value {
-  font-size: 1.2rem;
-  color: var(--gray-900);
-  font-weight: 600;
-}
-
-/* Secciones de contenido */
+/* Secciones: descripción y políticas */
 .product-detail-section {
-  margin-bottom: 2rem;
+    padding-top: 0.8rem;
 }
 
-.product-detail-section:last-child {
-  margin-bottom: 0;
+/* Responsive progresivo */
+@media (max-width: 1250px) {
+    .product-detail-left {
+        flex: 1 1 50%;
+    }
 }
 
-.product-detail-section h2 {
-  font-size: 1.5rem;
-  color: var(--gray-900);
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--accent);
+@media (max-width: 1000px) {
+    .product-detail-left {
+        flex: 1 1 45%;
+    }
 }
 
-.product-detail-section p {
-  font-size: 1rem;
-  color: var(--gray-700);
-  line-height: 1.6;
+/* Mobile: columnas apiladas */
+@media (max-width: 900px) {
+    .product-detail-top {
+        flex-direction: column;
+        max-width: 100%; /* ancho completo en mobile */
+        padding: 0 1rem;
+    }
+
+    .product-detail-left,
+    .product-detail-right {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .product-detail-right {
+        position: relative; /* desactiva sticky en mobile */
+        top: auto;
+        margin-top: 1.5rem;
+    }
+}
+.product-detail-left .btn-outline{
+  max-width: 200px;
+  width: 100%;
+  align-self: self-start;
 }
 
-/* Features list (si existen) */
-.product-features {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.product-features li {
-  padding: 0.75rem;
-  background: var(--warm-light);
-  border-radius: var(--radius-md);
-  font-size: 0.875rem;
-  color: var(--gray-700);
-  border-left: 3px solid var(--secondary-500);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .product-detail {
-    padding: 1.5rem;
-  }
-  
-  .product-detail-highlight {
-    grid-template-columns: 1fr;
-  }
-  
-  .price-value {
-    font-size: 1.5rem;
-  }
-  
-  .product-features {
-    grid-template-columns: 1fr;
-  }
-}
