@@ -1,4 +1,7 @@
 HELP.md
+/node_modules/
+/package.json
+/package-lock.json
 
 # BACKEND (Java/Spring Boot)
 backend/target/
