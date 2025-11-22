@@ -1,6 +1,6 @@
 # 🏨 ReservaYa
 
-Aplicación web fullstack para reservas de alojamientos. Permite a los usuarios explorar propiedades disponibles, ver detalles con galerías de imágenes, y a los administradores gestionar el catálogo de forma sencilla.
+Aplicación web fullstack para reservas de alojamientos. Permite a los usuarios explorar propiedades disponibles, gestionar favoritos, compartir en redes sociales, y realizar búsquedas avanzadas con calendario de disponibilidad.
 
 ---
 
@@ -9,17 +9,19 @@ Aplicación web fullstack para reservas de alojamientos. Permite a los usuarios 
 ### Frontend
 - React 18.3.1
 - Vite 7.1.14
-- React Router DOM 6.26
+- React Router DOM 6.26.0
 - Axios 1.12.2
+- Date-fns 4.1.0
+- React Date Range 2.0.1
+- React Toastify 11.0.5
 - Lucide React 0.553.0
-- Bootstrap 2.0
+- Bootstrap 2.0.0
 
 ### Backend
 - Java 17
 - Spring Boot 3.3.2
 - Spring Data JPA
-- Spring Security
-- JWT (jjwt 0.11.5)
+- Spring Security + JWT (jjwt 0.11.5)
 - Spring Boot Mail
 - Spring Boot Validation
 - H2 Database (desarrollo)
@@ -37,7 +39,7 @@ Aplicación web fullstack para reservas de alojamientos. Permite a los usuarios 
 
 ### Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/reservaya.git
+git clone https://github.com/AndresRosaas/reservaya.git
 cd reservaya
 ```
 
@@ -83,7 +85,7 @@ Documentación de la API: `http://localhost:8080/swagger-ui/index.html`
 
 ### Frontend
 ```bash
-cd frontend
+cd frontend/reservaya-frontend
 npm install
 ```
 
@@ -131,6 +133,8 @@ El sistema incluye usuarios pre-cargados para testing:
 | PUT | `/api/productos/{id}` | Editar producto | ✅ Admin |
 | DELETE | `/api/productos/{id}` | Eliminar producto | ✅ Admin |
 | GET | `/api/productos/{id}/imagenes` | Galería de imágenes | ❌ |
+| POST | `/api/productos/search` | Búsqueda avanzada con filtros | ❌ |
+| GET | `/api/productos/{id}/availability` | Calendario de disponibilidad | ❌ |
 
 ### Categorías
 | Método | Endpoint | Descripción | Auth |
@@ -161,6 +165,20 @@ El sistema incluye usuarios pre-cargados para testing:
 |--------|----------|-------------|------|
 | GET | `/api/users` | Listar usuarios | ✅ Admin |
 | PUT | `/api/users/{id}/role` | Cambiar rol de usuario | ✅ Admin |
+
+### Favoritos (Sprint 3)
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/users/{id}/favorites` | Listar favoritos del usuario | ✅ |
+| POST | `/api/users/{id}/favorites/{productId}` | Agregar a favoritos | ✅ |
+| DELETE | `/api/users/{id}/favorites/{productId}` | Quitar de favoritos | ✅ |
+
+### Reseñas (Sprint 3)
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/productos/{id}/reviews` | Obtener reseñas de producto | ❌ |
+| POST | `/api/productos/{id}/reviews` | Crear reseña | ✅ |
+| DELETE | `/api/reviews/{id}` | Eliminar reseña | ✅ |
 
 > Swagger Docs: `http://localhost:8080/swagger-ui/index.html`
 
@@ -206,11 +224,11 @@ cd backend
 
 ### Frontend
 ```bash
-cd frontend
+cd frontend/reservaya-frontend
 npm test
 ```
 
-> **Sprint 2:** Los tests fueron ejecutados manualmente y todas las funcionalidades están operativas.
+> **Sprints 1-3:** Los tests fueron ejecutados manualmente y todas las funcionalidades están operativas.
 
 ---
 
@@ -264,10 +282,57 @@ npm test
 
 ---
 
+## ✨ Funcionalidades Sprint 3
+
+### Búsqueda y Disponibilidad
+- ✅ Búsqueda avanzada por fecha con calendario doble (US#22)
+- ✅ Autocompletado y sugerencias de búsqueda
+- ✅ Filtros por categoría
+- ✅ Visualización de disponibilidad en calendario (US#23)
+- ✅ Indicadores visuales de fechas disponibles y ocupadas
+- ✅ Manejo de errores en búsqueda y disponibilidad
+
+### Sistema de Favoritos
+- ✅ Marcar/desmarcar productos como favoritos (US#24)
+- ✅ Página de favoritos personalizados (US#25)
+- ✅ Sincronización en tiempo real
+- ✅ Persistencia de favoritos por usuario
+- ✅ Actualizaciones optimistas en la UI
+
+### Compartir en Redes Sociales
+- ✅ Modal de compartir productos (US#27)
+- ✅ Integración con Facebook, Twitter y WhatsApp
+- ✅ Mensaje personalizable
+- ✅ Copiar enlace directo al portapapeles
+- ✅ Preview del producto con imagen y descripción
+- ✅ Diseño responsive
+
+### Políticas y Gestión
+- ✅ Visualización de políticas del producto (US#26)
+- ✅ Políticas organizadas por categorías
+- ✅ Eliminación de categorías con confirmación (US#29)
+- ✅ Validación de productos asociados antes de eliminar
+
+### Sistema de Reseñas (Implementado)
+- ✅ Puntuar productos con sistema de estrellas (US#28)
+- ✅ Escribir comentarios detallados
+- ✅ Visualizar reseñas de otros usuarios
+- ✅ Promedio de puntuación en tiempo real
+- ✅ Solo usuarios autenticados pueden reseñar
+
+### Mejoras Técnicas
+- ✅ Persistencia de sesión con localStorage
+- ✅ Interceptores de Axios para autenticación automática
+- ✅ Manejo centralizado de errores
+- ✅ Notificaciones toast para feedback al usuario
+- ✅ Optimistic UI updates en favoritos
+
+---
 
 ## 👤 Autor
 
 **AndresRosaas**
+- GitHub: [@AndresRosaas](https://github.com/AndresRosaas)
 
 ---
 
@@ -277,3 +342,11 @@ npm test
 - JWT expira en 24 horas (configurable en el backend)
 - Las contraseñas se almacenan hasheadas con BCrypt
 - CORS está configurado para permitir requests desde `http://localhost:5173`
+- La sesión de usuario se persiste en localStorage para mantenerla al recargar la página
+- Los favoritos son únicos por usuario y se sincronizan automáticamente entre pestañas
+
+---
+
+## 📄 Licencia
+
+MIT
