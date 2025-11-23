@@ -1,0 +1,24 @@
+.info-page {
+    min-height: calc(100vh - 120px);
+    background-color: var(--primary-900, #0a1524);
+    padding: 2rem;
+}
+
+.info-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.info-container h1 {
+    margin: 1.5rem 0 1rem;
+    color: #111827;
+}
+
+.info-container p {
+    color: #4b5563;
+    line-height: 1.7;
+}

@@ -9,7 +9,6 @@ export const FavoritesProvider = ({ children }) => {
     const [favorites, setFavorites] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    //TODO cargar favoritso cuand el usuario este logueado
     useEffect(() => {
         if (isAuthenticated() && user) {
             loadFavorites();
@@ -27,7 +26,6 @@ export const FavoritesProvider = ({ children }) => {
         try {
             setLoading(true);
             const response = await api.get(`/users/${user.id}/favorites`);
-            console.log('📦 Favoritos del backend:', response.data);
             setFavorites(response.data);
         } catch (error) {
             console.error("Error al cargar favoritos: ", error);

@@ -12,6 +12,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
+  margin-top: 10px;
 }
 
 .admin-view-header {
@@ -359,17 +360,17 @@
 }
 
 .admin-sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 280px;
-  height: 100vh;
-  background: var(--primary-900);
+  background: var(--primary-900, #0a4975);
   color: white;
+  position: sticky;
+  top: 64px; /* debajo del header */
+  height: calc(100vh - 64px);
+  padding-bottom: 2rem;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.12);
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
 }
 
 .sidebar-header {

@@ -22,6 +22,8 @@ public class ReservationMapper {
         dto.setEndDate(reservation.getEndDate());
         dto.setStatus(reservation.getStatus());
         dto.setReservationDate(reservation.getReservationDate());
+        dto.setTotalPrice(reservation.getTotalPrice());
+        dto.setCurrency(reservation.getCurrency());
 
         if(reservation.getUser() != null){
             User user = reservation.getUser();

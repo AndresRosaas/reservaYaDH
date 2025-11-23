@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from '../hooks/useAuth';
 import './LoginPage.css';
 
@@ -54,6 +54,7 @@ function LoginPage() {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+    const location = useLocation();
     //manejar el submit del form
     const HandleSubmit = async (e) => {
         e.preventDefault();
@@ -68,8 +69,9 @@ function LoginPage() {
         const result = await login(formData.email, formData.password);
         setIsLoading(false);
         if (result.success) {
-            //si el login es exitoso, redirigir al home
-            navigate('/');
+            //si el login es exitoso, redirigir al home o desde donde venia
+            const from = location.state?.from || '/';
+            navigate(from);
         } else {
             //Si no mostrar el error
             setServError(result.message);

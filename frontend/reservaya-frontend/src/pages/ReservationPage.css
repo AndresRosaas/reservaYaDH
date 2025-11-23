@@ -1,0 +1,105 @@
+.reservation-page {
+    min-height: calc(100vh - 120px);
+    background: #f9fafb;
+    padding: 2rem;
+}
+
+.reservation-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.reservation-container h1 {
+    margin: 1.5rem 0;
+    color: #111827;
+}
+
+.reservation-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.reservation-product,
+.reservation-details,
+.reservation-user {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.reservation-product h2,
+.reservation-details h2,
+.reservation-user h2 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+}
+
+.product-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.reservation-product h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+}
+
+.product-location {
+    color: #6b7280;
+    margin: 0;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row span {
+    color: #6b7280;
+}
+
+.detail-row strong {
+    color: #111827;
+}
+
+.price-row {
+    margin-top: 0.5rem;
+}
+
+.total-row {
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid #e5e7eb;
+    font-size: 1.15rem;
+}
+
+.total-row strong {
+    color: #059669;
+}
+
+.btn-confirm {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+    .reservation-page {
+        padding: 1rem;
+    }
+}

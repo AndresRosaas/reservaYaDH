@@ -15,8 +15,8 @@ public interface IReservationService {
     //Listo reservas por usuario
     List<ReservationDTO> findByUserId(Long userId);
     //Listo reserva por producto por fechas
-    List<ReservationDTO> findByProductAndDateRange(Long id, LocalDate startDate, LocalDate endDate);
+    List<ReservationDTO> findByProductAndDateRange(Long productId, LocalDate startDate, LocalDate endDate);
     //Elimino la reserva
-    void delete(Long id) throws ResourceNotFoundException;
+    void cancel(Long id) throws ResourceNotFoundException;
 
 }

@@ -8,9 +8,9 @@ const Footer = () => {
                     <p>© 2025 ReservaYa. Todos los derechos reservados.</p>
                 </div>
                 <div className="footer-links">
-                        <a href="/terms">Términos y Condiciones </a>
-                        <a href="/privacy">Política de Privacidad </a>
-                        <a href="/contact">Contacto</a>
+                        <a href="/info/terms">Términos y Condiciones </a>
+                        <a href="/info/privacy">Política de Privacidad </a>
+                        <a href="/info/contact">Contacto</a>
                     </div>
             </div>
         </footer>

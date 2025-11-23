@@ -37,8 +37,8 @@ const AvailabilityCalendar = ({ productId, onDateSelect }) => {
 
             const formatDate = (date) => {
                 const year = date.getFullYear();
-                const month = String(date.getMonth() +1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2,'0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
                 return `${year}-${month}-${day}`;
             }
 
@@ -49,10 +49,23 @@ const AvailabilityCalendar = ({ productId, onDateSelect }) => {
                 }
             });
 
-            
-            if (response.data && response.data.unavailableDates) {
-                const dates = response.data.unavailableDates.map(dateStr => new Date(dateStr));
-                setDisablesDates(dates);
+            if (response.data && response.data.occupiedRanges && response.data.occupiedRanges.length > 0) {
+                const allDisabledDates = [];
+
+                response.data.occupiedRanges.forEach(range => {
+                    const start = new Date(range.startDate);
+                    const end = new Date(range.endDate);
+
+                    const datesInRange = eachDayOfInterval({ start, end });
+                    allDisabledDates.push(...datesInRange);
+                });
+                const normalizatedDates = allDisabledDates.map(date => {
+                    const normalizated = new Date(date);
+                    normalizated.setHours(0, 0, 0, 0);
+                    return normalizated;
+                });
+
+                setDisablesDates(normalizatedDates);
             } else {
                 setDisablesDates([]);
             }
@@ -90,9 +103,14 @@ const AvailabilityCalendar = ({ productId, onDateSelect }) => {
 
     //funcion que desabilita fechas
     const isDateDisabled = (date) => {
-        return disablesDates.some(disablesDates =>
-            disablesDates.toDateString() === date.toDateString()
-        );
+        const disabled = disablesDates.some(disabledDate => {
+            const normalizedDate = new Date(date);
+            normalizedDate.setHours(0, 0, 0, 0);
+            const normalizedDisabled = new Date(disabledDate);
+            normalizedDisabled.setHours(0, 0, 0, 0);
+            return normalizedDisabled.getTime() === normalizedDate.getTime();
+        });
+        return disabled;
     };
 
     const calculateNights = () => {
@@ -172,8 +190,8 @@ const AvailabilityCalendar = ({ productId, onDateSelect }) => {
                 <div className="selected-dates-info">
                     <div className="dates-row">
                         <div className="dates-item">
-                            <span className="date-label">Check-in</span>
-                            <span>
+                            <span className="date-label">Check-in </span>
+                            <span className="date-value">
                                 {dateRange[0].startDate.toLocaleDateString('es-ES', {
                                     weekday: 'short',
                                     day: 'numeric',
@@ -183,10 +201,10 @@ const AvailabilityCalendar = ({ productId, onDateSelect }) => {
                         </div>
                         <div className="date-separator">→</div>
                         <div className="date-item">
-                            <span className="date-label">Check-out</span>
+                            <span className="date-label">Check-out </span>
                             <span className="date-value">
-                                {dateRange[0].endDate.toLocaleDateString('es-ES',{
-                                    weekdat: 'short',
+                                {dateRange[0].endDate.toLocaleDateString('es-ES', {
+                                    weekday: 'short',
                                     day: 'numeric',
                                     month: 'short'
                                 })}

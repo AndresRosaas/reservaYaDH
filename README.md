@@ -1,6 +1,6 @@
 # 🏨 ReservaYa
 
-Aplicación web fullstack para reservas de alojamientos. Permite a los usuarios explorar propiedades disponibles, gestionar favoritos, compartir en redes sociales, y realizar búsquedas avanzadas con calendario de disponibilidad.
+Aplicación web fullstack para reservas de alojamientos. Permite a los usuarios explorar propiedades disponibles, gestionar favoritos, compartir en redes sociales, realizar búsquedas avanzadas con calendario de disponibilidad y efectuar reservas completas.
 
 ---
 
@@ -166,19 +166,27 @@ El sistema incluye usuarios pre-cargados para testing:
 | GET | `/api/users` | Listar usuarios | ✅ Admin |
 | PUT | `/api/users/{id}/role` | Cambiar rol de usuario | ✅ Admin |
 
-### Favoritos (Sprint 3)
+### Favoritos
 | Método | Endpoint | Descripción | Auth |
 |--------|----------|-------------|------|
 | GET | `/api/users/{id}/favorites` | Listar favoritos del usuario | ✅ |
 | POST | `/api/users/{id}/favorites/{productId}` | Agregar a favoritos | ✅ |
 | DELETE | `/api/users/{id}/favorites/{productId}` | Quitar de favoritos | ✅ |
 
-### Reseñas (Sprint 3)
+### Reseñas
 | Método | Endpoint | Descripción | Auth |
 |--------|----------|-------------|------|
 | GET | `/api/productos/{id}/reviews` | Obtener reseñas de producto | ❌ |
 | POST | `/api/productos/{id}/reviews` | Crear reseña | ✅ |
 | DELETE | `/api/reviews/{id}` | Eliminar reseña | ✅ |
+
+### Reservas (Sprint 4)
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/reservations` | Crear reserva | ✅ |
+| GET | `/api/reservations/{id}` | Detalle de reserva | ✅ |
+| GET | `/api/reservations/user/{userId}` | Historial del usuario | ✅ |
+| DELETE | `/api/reservations/{id}` | Cancelar reserva | ✅ |
 
 > Swagger Docs: `http://localhost:8080/swagger-ui/index.html`
 
@@ -186,7 +194,7 @@ El sistema incluye usuarios pre-cargados para testing:
 
 ## 🗂️ Base de datos
 
-### Sprint 1-2 - Desarrollo
+### Sprint 1-4 - Desarrollo
 - H2 en memoria
 - Se crea automáticamente al iniciar
 - `spring.jpa.hibernate.ddl-auto=create-drop`
@@ -200,7 +208,7 @@ El sistema incluye usuarios pre-cargados para testing:
 
 ## 📧 Configuración de Email (Opcional)
 
-Para habilitar el envío de emails de confirmación de registro, configurar en `application.properties`:
+Para habilitar el envío de emails de confirmación de registro y reservas, configurar en `application.properties`:
 ```properties
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
@@ -228,7 +236,7 @@ cd frontend/reservaya-frontend
 npm test
 ```
 
-> **Sprints 1-3:** Los tests fueron ejecutados manualmente y todas las funcionalidades están operativas.
+> **Sprints 1-4:** Los tests fueron ejecutados manualmente y todas las funcionalidades están operativas.
 
 ---
 
@@ -313,7 +321,7 @@ npm test
 - ✅ Eliminación de categorías con confirmación (US#29)
 - ✅ Validación de productos asociados antes de eliminar
 
-### Sistema de Reseñas (Implementado)
+### Sistema de Reseñas
 - ✅ Puntuar productos con sistema de estrellas (US#28)
 - ✅ Escribir comentarios detallados
 - ✅ Visualizar reseñas de otros usuarios
@@ -326,6 +334,45 @@ npm test
 - ✅ Manejo centralizado de errores
 - ✅ Notificaciones toast para feedback al usuario
 - ✅ Optimistic UI updates en favoritos
+
+---
+
+## ✨ Funcionalidades Sprint 4
+
+### Sistema de Reservas
+- ✅ Selección de fechas con calendario doble (US#30)
+- ✅ Validación de usuario logueado antes de reservar
+- ✅ Página de confirmación con resumen completo (US#31)
+- ✅ Visualización de producto, fechas, noches y precio total
+- ✅ Datos del usuario en la reserva
+- ✅ Crear reserva con validaciones de disponibilidad (US#32)
+- ✅ Cálculo automático de precio total
+- ✅ Validación de fechas solapadas
+- ✅ Validación de fechas pasadas
+
+### Historial de Reservas
+- ✅ Acceso a historial desde perfil de usuario (US#33)
+- ✅ Lista de reservas con estado (Confirmada, Cancelada, Pendiente, Completada)
+- ✅ Navegación al producto desde la reserva
+- ✅ Cancelación de reservas con confirmación modal
+- ✅ Banner "Faltan X días para tu viaje" en Mis Datos
+
+### Comunicación
+- ✅ Botón flotante de WhatsApp (US#34)
+- ✅ Apertura directa a chat con mensaje predefinido
+- ✅ Email de confirmación de reserva (US#35)
+- ✅ Detalles de reserva en el correo
+
+### Páginas Informativas
+- ✅ Página de Términos y Condiciones
+- ✅ Página de Política de Privacidad
+- ✅ Página de Contacto
+
+### Mejoras de UX
+- ✅ Redirección post-login a página de origen
+- ✅ Estados visuales de reservas con badges de colores
+- ✅ Modal de confirmación para cancelar reservas
+- ✅ Notificaciones toast para feedback al usuario
 
 ---
 
@@ -344,6 +391,8 @@ npm test
 - CORS está configurado para permitir requests desde `http://localhost:5173`
 - La sesión de usuario se persiste en localStorage para mantenerla al recargar la página
 - Los favoritos son únicos por usuario y se sincronizan automáticamente entre pestañas
+- Las reservas validan automáticamente disponibilidad y fechas antes de confirmarse
+- El email de confirmación de reserva incluye todos los detalles de la reserva
 
 ---
 

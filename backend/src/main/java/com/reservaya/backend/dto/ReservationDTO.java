@@ -3,6 +3,7 @@ package com.reservaya.backend.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.reservaya.backend.enums.ReservationStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -30,6 +31,8 @@ public class ReservationDTO {
     //
     private UserDTO user;
     private ProductDTO product;
+    private BigDecimal totalPrice;
+    private String currency;
 
     public ReservationDTO() {
     }
@@ -43,7 +46,7 @@ public class ReservationDTO {
         this.status = ReservationStatus.PENDING;
     }
 
-    public ReservationDTO(Long id, Long userId, Long productId, String userName, String userEmail, String productName, LocalDate startDate, LocalDate endDate, LocalDateTime reservationDate, ReservationStatus status) {
+    public ReservationDTO(Long id, Long userId, Long productId, String userName, String userEmail, String productName, LocalDate startDate, LocalDate endDate, LocalDateTime reservationDate, ReservationStatus status, UserDTO user, ProductDTO product, BigDecimal totalPrice, String currency) {
         this.id = id;
         this.userId = userId;
         this.productId = productId;
@@ -54,6 +57,10 @@ public class ReservationDTO {
         this.endDate = endDate;
         this.reservationDate = reservationDate;
         this.status = status;
+        this.user = user;
+        this.product = product;
+        this.totalPrice = totalPrice;
+        this.currency = currency;
     }
 
     public Long getId() {
@@ -150,6 +157,22 @@ public class ReservationDTO {
 
     public void setProduct(ProductDTO product) {
         this.product = product;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
 

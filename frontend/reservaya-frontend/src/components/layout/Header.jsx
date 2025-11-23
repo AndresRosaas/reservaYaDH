@@ -60,15 +60,10 @@ function Header() {
                                     <div className='dropdown-header'>
                                         <p className='user-fullname'>Hola {user.firstName} {user.lastName}</p>
                                     </div>
-                                    <button onClick={() => navigate('/perfil')} disabled>
-                                        👤 Mi Perfil (Proximamente)
+                                    <button onClick={() => navigate('/perfil')}>
+                                        👤 Mi Perfil
                                     </button>
-                                    <button onClick={() => navigate('/mis-reservas')} disabled>
-                                        📋 Mis Reservas (Proximamente)
-                                    </button>
-                                    <button onClick={() => navigate('/favoritos')} >
-                                        ⭐ Favoritos
-                                    </button>
+                                   
                                     {/**Solo si es admin */}
                                     {isAdmin() && (
                                         <>

@@ -32,15 +32,16 @@
 /* === LAYOUT PRINCIPAL === */
 .admin-layout {
   display: flex;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  width: 100%;
+  min-height: calc(100vh - 100px); /* Igual que el profile */
+  background: #f9fafb;
 }
 
+/* === MAIN CONTENT === */
 .admin-main {
   flex: 1;
-  margin-left: 280px; /* Ancho del sidebar */
-  padding: 2rem;
+  padding: 2.5rem;
+  background: #f9fafb;
+  min-height: 100%;
   overflow-y: auto;
-  width: calc(100% - 280px);
-  box-sizing: border-box;
 }

@@ -24,7 +24,7 @@ const ReviewList = ({ productId, refreshTrigger }) => {
 
             const response = await api.get(`/reviews/product/${productId}`);
             setReviews(response.data);
-            console.log("REVIEW DATA:", response.data);
+            
             if (response.data.length > 0) {
                 const avg = response.data.reduce((sum, review) => sum + review.rating, 0) / response.data.length;
                 setStats({
@@ -99,42 +99,44 @@ const ReviewList = ({ productId, refreshTrigger }) => {
                 </div>
             ) : (
                 <div className="reviews-container">
-                    {reviews.map((review) => (
-                        <div key={review.id} className="review-item">
-                            <div className="review-header">
-                                <div className="review-user">
-                                    <div className="user-avatar">
-                                        {getInitials(review.userName)}
-                                    </div>
+                    {reviews
+                        .filter(review => review && review.id)
+                        .map((review) => (
+                            <div key={review.id} className="review-item">
+                                <div className="review-header">
+                                    <div className="review-user">
+                                        <div className="user-avatar">
+                                            {getInitials(review.userName)}
+                                        </div>
 
-                                    <div className="user-info">
-                                        <div className="user-name">
-                                            {review.userName}
-                                        </div>
-                                        <div className="review-date">
-                                            {formatDate(review.createdAt)}
+                                        <div className="user-info">
+                                            <div className="user-name">
+                                                {review.userName}
+                                            </div>
+                                            <div className="review-date">
+                                                {formatDate(review.createdAt)}
+                                            </div>
                                         </div>
                                     </div>
+                                    <StarRating
+                                        rating={review.rating} readonly size={18}
+                                    />
                                 </div>
-                                <StarRating
-                                    rating={review.rating} readonly size={18}
-                                />
+                                {review.comment && (
+                                    <div className="review-comment">
+                                        {review.comment}
+                                    </div>
+                                )}
+                                {user?.id === review.userId && (
+                                    <button
+                                        className="btn-delete-review"
+                                        onClick={() => handleDeleteReview(review.id)}
+                                    >
+                                        🗑️ Eliminar mi reseña
+                                    </button>
+                                )}
                             </div>
-                            {review.comment && (
-                                <div className="review-comment">
-                                    {review.comment}
-                                </div>
-                            )}
-                            {user.id === review.userId && (
-                                <button
-                                    className="btn-delete-review"
-                                    onClick={() => handleDeleteReview(review.id)}
-                                >
-                                    🗑️ Eliminar mi reseña
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                        ))}
                 </div>
             )}
         </div>

@@ -8,6 +8,9 @@ import AvailabilityCalendar from './AvailabilityCalendar';
 import ShareModal from './ShareModal';
 import ReviewList from '../reviews/ReviewsList';
 import ReviewForm from '../reviews/ReviewsForm';
+import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
+
 
 
 const ProductDetail = () => {
@@ -20,6 +23,7 @@ const ProductDetail = () => {
     const [error, setError] = useState(null);
     const [selectedDates, setSelectedDates] = useState(null);
     const [reviewRefresh, setReviewsRefresh] = useState(0);
+    const { user } = useAuth();
 
     //useeffect se ejecuta cuando el componente se carga
     useEffect(() => {
@@ -60,6 +64,24 @@ const ProductDetail = () => {
     if (loading) return <div>Cargando producto...</div>;
     if (error) return <div>{error}</div>;
     if (!product) return null;
+
+    const hanldleReserve = async () => {
+        if (!user) {
+            navigate('/login', { state: { from: `/product/${id}` } });
+            return
+        }
+        //validar que haya fechas seleccionadas
+        if (!selectedDates || !selectedDates.startDate || !selectedDates.endDate) {
+            toast.warning('Selecciona las fechas de tu reserva');
+            return;
+        }
+        navigate(`/reservation/${id}`, {
+            state: {
+                startDate: selectedDates.startDate,
+                endDate: selectedDates.endDate
+            }
+        });
+    };
 
     return (
 
@@ -152,8 +174,14 @@ const ProductDetail = () => {
                             productId={product.id}
                             onDateSelect={handleDateSelect}
                         />
+                        <button
+                            className='btn btn-primary'
+                            onClick={hanldleReserve}
+                            disabled={!selectedDates}
+                        >
+                            Reservar
+                        </button>
                     </div>
-
                 </div>
 
             </div>

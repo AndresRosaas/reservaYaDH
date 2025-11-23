@@ -2,6 +2,8 @@ import './AdminPage.css';
 import { useEffect, useState } from 'react';
 import AdminPanel from '../components/admin/AdminPanel'
 import AdminSideBar from '../components/admin/AdminSideBar';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 
 const AdminPage = () => {
     //Tengo que ver si es celular o no
@@ -33,16 +35,20 @@ const AdminPage = () => {
             </div>
         );
     }
-    
+
     return (
-        <div className='admin-layout'>
-            <AdminSideBar
-                currentSection={currentSection}
-                onNavigate={setCurrentSection}
-            />
-            <main className='admin-main'>
-                <AdminPanel currentSection={currentSection}/>
-            </main>
-        </div>
+        <>
+            <Header />
+            <div className='admin-layout'>
+                <AdminSideBar
+                    currentSection={currentSection}
+                    onNavigate={setCurrentSection}
+                />
+                <main className='admin-main'>
+                    <AdminPanel currentSection={currentSection} />
+                </main>
+            </div>
+            <Footer />
+        </>
     );
 }; export default AdminPage;

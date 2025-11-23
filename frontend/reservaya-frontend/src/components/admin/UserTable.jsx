@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import api from '../../services/api';
 import './AdminPanel.css';
+import { toast } from "react-toastify";
+import Modal from '../products/Modal';
 
 function UserTable() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [pendingAction, setPendingAction] = useState(null);
+    const [modalMessage, setModalMessage] = useState('');
+    const [selectedUserNames, setSelectedUserNames] = useState('');
 
     useEffect(() => {
         loadUsers();
@@ -26,30 +32,35 @@ function UserTable() {
 
 
 
-    const handletoggleRole = async (userId, currentRole) => {
+    const handletoggleRole = (userId, currentRole, firstName, lastName) => {
         //Determino el nuevo rol
         const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
         //Confirmacion
-        const confirmMessage = currentRole === 'ADMIN'
+        const confirmationText = currentRole === 'ADMIN'
             ? '¿Estas seguro de quitar permisos de administrador a este usuario?'
             : '¿Estas seguro de otorgar permisos de administrador a este usuario?';
 
-        if (!TableRowsSplit.info(confirmMessage)) {
-            return;
-        }
+        setModalMessage(confirmationText);
+        setSelectedUserNames(`${firstName} ${lastName}`);
+        setPendingAction({ userId, newRole });
+        setModalOpen(true);
+    };
+
+    const handleConfirm = async () => {
+        const { userId, newRole } = pendingAction;
 
         try {
             setLoading(true)
             //llamo al endpoint para actualizar el nuevo rol
             await api.put(`/users/${userId}/role?role=${newRole}`);
             loadUsers();
-            alert(`Rol actualizado correctamente a ${newRole}`);
+            toast.success(`Rol actualizado correctamente a ${newRole}`);
         } catch (err) {
-            alert('Error al cambiar el rol');
+            toast.warning('Error al cambiar el rol');
             console.error('Error al cambiar el rol: ', err);
-            
-        }finally{setLoading(false);}
-        
+
+        } finally { setModalOpen(false); setPendingAction(null); setLoading(false); }
+
     };
     if (loading) {
         return <div className="loading-spinner">Cargando...</div>;
@@ -64,6 +75,14 @@ function UserTable() {
     return (
 
         <div className="admin-table-container">
+            {modalOpen && (
+                <Modal
+                message={`${modalMessage} para ${selectedUserNames}`}
+                onConfirm={handleConfirm}
+                onCancel={()=>setModalOpen(false)}
+                />
+            )}
+
             <table className="admin-table">
                 <thead className="admin-table-thead">
                     <tr>
@@ -97,7 +116,10 @@ function UserTable() {
                                     {user.role === 'USER' ? (
                                         <button
                                             className="btn btn-primary"
-                                            onClick={() => handletoggleRole(user.id, user.role)}
+                                             onClick={() => handletoggleRole(user.id, 
+                                                user.role, 
+                                                user.firstName,
+                                                user.lastName)}
                                             disabled={loading}
                                         >
                                             👑 Hacer Admin
@@ -105,7 +127,10 @@ function UserTable() {
                                     ) : (
                                         <button
                                             className="btn btn-secondary"
-                                            onClick={() => handletoggleRole(user.id, user.role)}
+                                            onClick={() => handletoggleRole(user.id, 
+                                                user.role, 
+                                                user.firstName,
+                                                user.lastName)}
                                             disabled={loading}
                                         >
                                             👤 Quitar Admin
